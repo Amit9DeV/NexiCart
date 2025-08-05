@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { productsAPI } from '@/lib/api';
 import ProductCard from '@/components/product/ProductCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -184,7 +185,15 @@ export default function Home() {
                         transition={{ delay: 0.3 + index * 0.1 }}
                         className="card-nexkartin p-3 sm:p-4 hover-lift"
                       >
-                        <div className="w-full h-16 sm:h-20 lg:h-24 bg-gray-100 rounded-lg mb-2 sm:mb-3"><img className='w-full h-full object-cover' src={product.images[0].url} alt="" /></div>
+                        <div className="w-full h-16 sm:h-20 lg:h-24 bg-gray-100 rounded-lg mb-2 sm:mb-3">
+                          <Image 
+                            className='w-full h-full object-cover' 
+                            src={product.images[0].url} 
+                            alt={product.name}
+                            width={200}
+                            height={200}
+                          />
+                        </div>
                         <h3 className="font-semibold text-xs sm:text-sm text-gray-900 line-clamp-2">{product.name}</h3>
                         <p className="text-sm sm:text-lg font-bold text-indigo-600">${product.price}</p>
                       </motion.div>
@@ -231,7 +240,7 @@ export default function Home() {
           >
             <h2 className="text-2xl sm:text-3xl lg:text-heading-2 mb-4">Shop by Category</h2>
             <p className="text-sm sm:text-base lg:text-body text-gray-600 max-w-2xl mx-auto px-4">
-              Explore our wide range of categories and find exactly what you're looking for
+              Explore our wide range of categories and find exactly what you&apos;re looking for
             </p>
           </motion.div>
 

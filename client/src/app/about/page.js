@@ -61,7 +61,7 @@ export default function About() {
             About <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">NexiCart</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
-            We're not just another e-commerce platform. We're your gateway to the future of shopping, 
+            We&apos;re not just another e-commerce platform. We&apos;re your gateway to the future of shopping, 
             where technology meets convenience and quality meets affordability.
           </p>
         </div>
@@ -90,13 +90,13 @@ export default function About() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
-              <p className="text-xl text-gray-600">How we started and where we're headed</p>
+              <p className="text-xl text-gray-600">How we started and where we&apos;re headed</p>
             </div>
             
             <div className="prose prose-lg max-w-none text-gray-700">
               <p className="text-xl leading-relaxed mb-8">
                 Founded in 2020, NexiCart emerged from a simple idea: shopping should be effortless, enjoyable, and accessible to everyone. 
-                What started as a small team's vision has grown into a platform trusted by thousands of customers worldwide.
+                What started as a small team&apos;s vision has grown into a platform trusted by thousands of customers worldwide.
               </p>
               
               <p className="text-lg leading-relaxed mb-8">

@@ -47,7 +47,7 @@ export default function AdminAnalytics() {
       return;
     }
     fetchAnalytics();
-  }, [user, period]);
+  }, [user, period, fetchAnalytics, router]);
 
   const fetchAnalytics = async () => {
     try {

@@ -11,7 +11,7 @@ const nextConfig = {
     },
   },
   images: {
-    domains: ['localhost', 'your-backend-domain.railway.app', 'your-backend-domain.render.com'],
+    domains: ['localhost', 'nexicart.onrender.com'],
     remotePatterns: [
       {
         protocol: 'https',

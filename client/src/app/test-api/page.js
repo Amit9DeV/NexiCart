@@ -14,7 +14,7 @@ export default function TestAPI() {
         console.log('Testing API connection...');
         
         // Test direct fetch to the API
-        const response = await fetch('http://localhost:5000/api/products', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

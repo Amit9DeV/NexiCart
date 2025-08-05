@@ -11,7 +11,7 @@ export default function Debug() {
   const testDirectAxios = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/products');
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`);
       setResults(prev => ({
         ...prev,
         directAxios: {
@@ -64,7 +64,7 @@ export default function Debug() {
       ...prev,
       envVar: {
         NEXT_PUBLIC_API_URL: apiUrl || 'NOT SET',
-        defaultUrl: 'http://localhost:5000/api'
+        defaultUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
       }
     }));
   };
