@@ -22,10 +22,10 @@ app.use(express.json());
 // Enhanced CORS configuration
 const corsOptions = {
   origin: [
-    'http://localhost:3000', 
+    'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://nexi-cart-a551xgkz1-amit-kumar-rams-projects.vercel.app',
-    process.env.FRONTEND_URL_PROD || 'https://nexi-cart-a551xgkz1-amit-kumar-rams-projects.vercel.app'
+    'https://nexi-cart.vercel.app', // Added Vercel frontend URL
+    process.env.FRONTEND_URL_PROD || 'https://nexi-cart.vercel.app'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
