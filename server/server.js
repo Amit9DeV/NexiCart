@@ -24,8 +24,12 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+<<<<<<< HEAD
     'https://nexi-cart.vercel.app', // Added Vercel frontend URL
     process.env.FRONTEND_URL_PROD || 'https://nexi-cart.vercel.app'
+=======
+    'https://nexi-cart.vercel.app/',
+>>>>>>> c76db3acff20462b0dd3fed6d22f54136889445b
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
