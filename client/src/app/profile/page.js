@@ -2,13 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { usersAPI, ordersAPI } from '@/lib/api';
+import { usersAPI, ordersAPI, authAPI } from '@/lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import Link from 'next/link';
-import { FiUser, FiBox, FiHeart, FiCalendar, FiDollarSign, FiCheckCircle, FiClock, FiArrowRight, FiLock } from 'react-icons/fi';
+import { 
+  FiUser, FiBox, FiHeart, FiCalendar, FiDollarSign, FiCheckCircle, FiClock, 
+  FiArrowRight, FiLock, FiMapPin, FiSettings, FiShield, FiActivity, 
+  FiStar, FiGift, FiEye, FiEyeOff, FiDownload, FiCamera, FiEdit3,
+  FiMail, FiPhone, FiBell, FiGlobe, FiAward
+} from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 export default function ProfilePage() {
@@ -23,6 +28,13 @@ export default function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMessage, setPasswordMessage] = useState(null);
   const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showPasswordFields, setShowPasswordFields] = useState(false);
+  const [profileStats, setProfileStats] = useState({
+    totalOrders: 0,
+    totalSpent: 0,
+    wishlistCount: 0,
+    loyaltyPoints: 0
+  });
 
   useEffect(() => {
     if (user) {
@@ -37,6 +49,17 @@ export default function ProfilePage() {
           ]);
           setOrders(ordersResponse.data.data);
           setWishlist(wishlistResponse.data.data);
+          
+          // Calculate profile stats
+          const totalSpent = ordersResponse.data.data.reduce((sum, order) => sum + order.totalPrice, 0);
+          const loyaltyPoints = Math.floor(totalSpent); // 1 point per dollar
+          
+          setProfileStats({
+            totalOrders: ordersResponse.data.data.length,
+            totalSpent: totalSpent,
+            wishlistCount: wishlistResponse.data.data.length,
+            loyaltyPoints: loyaltyPoints
+          });
         } catch (error) {
           console.error('Failed to fetch user data', error);
         } finally {
@@ -92,6 +115,65 @@ export default function ProfilePage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Profile</h1>
             <p className="text-sm text-gray-500">Manage your account, orders, and wishlist</p>
           </div>
+        </motion.div>
+      </section>
+
+      {/* Quick Stats Cards */}
+      <section className="container-nexkartin mb-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          {/* Total Orders */}
+          <div className="card-nexkartin bg-gradient-to-br from-blue-50 to-indigo-100/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-blue-200/50 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-blue-600">Total Orders</p>
+                <p className="text-2xl font-bold text-blue-900">{profileStats.totalOrders}</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md">
+                <FiBox className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          {/* Total Spent */}
+          <div className="card-nexkartin bg-gradient-to-br from-green-50 to-emerald-100/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-green-200/50 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-green-600">Total Spent</p>
+                <p className="text-2xl font-bold text-green-900">${profileStats.totalSpent.toFixed(2)}</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-md">
+                <FiDollarSign className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          {/* Wishlist Items */}
+          <div className="card-nexkartin bg-gradient-to-br from-pink-50 to-rose-100/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-pink-200/50 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-pink-600">Wishlist Items</p>
+                <p className="text-2xl font-bold text-pink-900">{profileStats.wishlistCount}</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-md">
+                <FiHeart className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
+          {/* Loyalty Points */}
+          <div className="card-nexkartin bg-gradient-to-br from-purple-50 to-violet-100/80 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-purple-200/50 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-purple-600">Loyalty Points</p>
+                <p className="text-2xl font-bold text-purple-900">{profileStats.loyaltyPoints}</p>
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center shadow-md">
+                <FiAward className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+
         </motion.div>
       </section>
 
@@ -213,6 +295,156 @@ export default function ProfilePage() {
             </div>
           </motion.div>
         </div>
+      </div>
+
+      {/* Additional Profile Sections */}
+      <div className="container-nexkartin mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Quick Actions */}
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+            <div className="card-nexkartin bg-gradient-to-br from-amber-50 to-orange-100/80 backdrop-blur-md rounded-2xl shadow-xl p-6">
+              <h2 className="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
+                <FiSettings className="w-5 h-5 text-amber-500" /> Quick Actions
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <Button variant="outline" className="btn-nexkartin flex items-center gap-2 justify-start p-4 h-auto">
+                  <FiMapPin className="w-5 h-5 text-blue-500" />
+                  <div className="text-left">
+                    <div className="font-medium">Addresses</div>
+                    <div className="text-xs text-gray-500">Manage delivery addresses</div>
+                  </div>
+                </Button>
+                
+                <Button variant="outline" className="btn-nexkartin flex items-center gap-2 justify-start p-4 h-auto">
+                  <FiBell className="w-5 h-5 text-purple-500" />
+                  <div className="text-left">
+                    <div className="font-medium">Notifications</div>
+                    <div className="text-xs text-gray-500">Email & SMS preferences</div>
+                  </div>
+                </Button>
+                
+                <Button variant="outline" className="btn-nexkartin flex items-center gap-2 justify-start p-4 h-auto">
+                  <FiShield className="w-5 h-5 text-green-500" />
+                  <div className="text-left">
+                    <div className="font-medium">Privacy</div>
+                    <div className="text-xs text-gray-500">Privacy settings</div>
+                  </div>
+                </Button>
+                
+                <Button variant="outline" className="btn-nexkartin flex items-center gap-2 justify-start p-4 h-auto">
+                  <FiDownload className="w-5 h-5 text-indigo-500" />
+                  <div className="text-left">
+                    <div className="font-medium">Export Data</div>
+                    <div className="text-xs text-gray-500">Download your data</div>
+                  </div>
+                </Button>
+                
+              </div>
+            </div>
+          </motion.div>
+          
+          {/* Account Summary */}
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
+            <div className="card-nexkartin bg-gradient-to-br from-slate-50 to-gray-100/80 backdrop-blur-md rounded-2xl shadow-xl p-6">
+              <h2 className="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
+                <FiActivity className="w-5 h-5 text-slate-500" /> Account Summary
+              </h2>
+              <div className="space-y-3">
+                
+                <div className="flex items-center justify-between py-2 border-b border-gray-200">
+                  <div className="flex items-center gap-2">
+                    <FiUser className="w-4 h-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">Member since</span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-900">
+                    {user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long' 
+                    }) : 'N/A'}
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-between py-2 border-b border-gray-200">
+                  <div className="flex items-center gap-2">
+                    <FiMail className="w-4 h-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">Email verified</span>
+                  </div>
+                  <span className="flex items-center gap-1">
+                    <FiCheckCircle className="w-4 h-4 text-green-500" />
+                    <span className="text-sm font-medium text-green-600">Yes</span>
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-between py-2 border-b border-gray-200">
+                  <div className="flex items-center gap-2">
+                    <FiStar className="w-4 h-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">Customer tier</span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-900">
+                    {profileStats.totalSpent >= 1000 ? 'Gold' : 
+                     profileStats.totalSpent >= 500 ? 'Silver' : 'Bronze'}
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center gap-2">
+                    <FiGift className="w-4 h-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">Available rewards</span>
+                  </div>
+                  <span className="text-sm font-medium text-purple-600">
+                    {Math.floor(profileStats.loyaltyPoints / 100)} vouchers
+                  </span>
+                </div>
+                
+              </div>
+            </div>
+          </motion.div>
+          
+        </div>
+        
+        {/* Recent Activity */}
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }} className="mt-8">
+          <div className="card-nexkartin bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-6">
+            <h2 className="text-lg font-bold mb-4 text-gray-900 flex items-center gap-2">
+              <FiActivity className="w-5 h-5 text-gray-500" /> Recent Activity
+            </h2>
+            <div className="space-y-3">
+              
+              {orders.slice(0, 3).map((order, index) => (
+                <div key={order._id} className="flex items-center gap-3 p-3 bg-gray-50/50 rounded-lg">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                    <FiBox className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-900">
+                      Order #{order._id.slice(-6).toUpperCase()}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      ${order.totalPrice.toFixed(2)} • {new Date(order.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    order.status === 'Delivered' ? 'bg-green-100 text-green-700' : 
+                    'bg-yellow-100 text-yellow-700'
+                  }`}>
+                    {order.status}
+                  </div>
+                </div>
+              ))}
+              
+              {orders.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <FiBox className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                  <p>No recent activity</p>
+                </div>
+              )}
+              
+            </div>
+          </div>
+        </motion.div>
+        
       </div>
     </div>
   );

@@ -361,3 +361,178 @@ exports.updateOrderStatus = async (req, res) => {
     });
   }
 };
+
+// @desc    Get homepage sections configuration
+// @route   GET /api/admin/homepage-sections
+// @access  Private/Admin
+exports.getHomepageSections = async (req, res) => {
+  try {
+    const heroProducts = await Product.find({ showInHero: true, isActive: true })
+      .sort({ heroOrder: 1, createdAt: -1 })
+      .limit(8)
+      .select('name price images ratings showInHero heroOrder');
+
+    const featuredProducts = await Product.find({ isFeatured: true, isActive: true })
+      .sort({ featuredOrder: 1, createdAt: -1 })
+      .limit(8)
+      .select('name price images ratings isFeatured featuredOrder');
+
+    const newArrivals = await Product.find({ showInNewArrivals: true, isActive: true })
+      .sort({ newArrivalsOrder: 1, createdAt: -1 })
+      .limit(8)
+      .select('name price images ratings showInNewArrivals newArrivalsOrder');
+
+    res.status(200).json({
+      success: true,
+      data: {
+        heroProducts,
+        featuredProducts,
+        newArrivals
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+// @desc    Update product homepage sections
+// @route   PUT /api/admin/homepage-sections/:id
+// @access  Private/Admin
+exports.updateProductSections = async (req, res) => {
+  try {
+    const { showInHero, isFeatured, showInNewArrivals, heroOrder, featuredOrder, newArrivalsOrder } = req.body;
+    
+    const product = await Product.findById(req.params.id);
+    
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        error: 'Product not found'
+      });
+    }
+
+    // Update section flags and orders
+    if (showInHero !== undefined) product.showInHero = showInHero;
+    if (isFeatured !== undefined) product.isFeatured = isFeatured;
+    if (showInNewArrivals !== undefined) product.showInNewArrivals = showInNewArrivals;
+    if (heroOrder !== undefined) product.heroOrder = heroOrder;
+    if (featuredOrder !== undefined) product.featuredOrder = featuredOrder;
+    if (newArrivalsOrder !== undefined) product.newArrivalsOrder = newArrivalsOrder;
+
+    await product.save();
+
+    res.status(200).json({
+      success: true,
+      data: product
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+// @desc    Batch update homepage sections
+// @route   PUT /api/admin/homepage-sections/batch
+// @access  Private/Admin
+exports.batchUpdateSections = async (req, res) => {
+  try {
+    const { updates } = req.body; // Array of {productId, ...updates}
+    
+    if (!Array.isArray(updates)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Updates must be an array'
+      });
+    }
+
+    const results = [];
+    
+    for (const update of updates) {
+      const { productId, ...updateData } = update;
+      
+      try {
+        const product = await Product.findByIdAndUpdate(
+          productId,
+          updateData,
+          { new: true, runValidators: true }
+        );
+        
+        if (product) {
+          results.push({ success: true, productId, product });
+        } else {
+          results.push({ success: false, productId, error: 'Product not found' });
+        }
+      } catch (updateError) {
+        results.push({ success: false, productId, error: updateError.message });
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      data: results
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+// @desc    Get products for homepage section management
+// @route   GET /api/admin/products-for-sections
+// @access  Private/Admin
+exports.getProductsForSections = async (req, res) => {
+  try {
+    const { page = 1, limit = 20, search = '', category = '' } = req.query;
+    
+    const query = { isActive: true };
+    
+    // Add search filter
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { brand: { $regex: search, $options: 'i' } }
+      ];
+    }
+    
+    // Add category filter
+    if (category) {
+      query.category = category;
+    }
+    
+    const products = await Product.find(query)
+      .select('name brand category price images ratings stock showInHero isFeatured showInNewArrivals heroOrder featuredOrder newArrivalsOrder')
+      .sort({ createdAt: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+    
+    const totalProducts = await Product.countDocuments(query);
+    
+    res.status(200).json({
+      success: true,
+      data: {
+        products,
+        pagination: {
+          current: page,
+          pages: Math.ceil(totalProducts / limit),
+          total: totalProducts
+        }
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};

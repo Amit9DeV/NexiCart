@@ -55,14 +55,25 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: {
     type: String,
     required: true,
-    enum: ['stripe', 'paypal', 'cash'],
+    enum: ['stripe', 'paypal', 'cash', 'upi', 'razorpay'],
     default: 'stripe'
   },
   paymentResult: {
     id: String,
     status: String,
     update_time: String,
-    email_address: String
+    email_address: String,
+    // Razorpay/UPI specific fields
+    razorpay_payment_id: String,
+    razorpay_order_id: String,
+    razorpay_signature: String,
+    method: String, // 'upi', 'card', 'netbanking', etc.
+    upi: {
+      vpa: String // Virtual Payment Address (UPI ID)
+    },
+    amount: Number,
+    currency: String,
+    description: String
   },
   itemsPrice: {
     type: Number,

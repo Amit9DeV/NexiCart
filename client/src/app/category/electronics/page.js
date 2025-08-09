@@ -41,7 +41,7 @@ export default function ElectronicsPage() {
     const fetchProducts = async () => {
       try {
         const response = await productsAPI.getProducts({ 
-          category: 'electronics',
+          category: 'Electronics',
           limit: 50 
         });
         const productsData = response.data?.data || [];
@@ -56,14 +56,14 @@ export default function ElectronicsPage() {
   }, []);
 
   const electronicsCategories = [
-    { name: 'Smartphones', icon: FiSmartphone, count: 32 },
-    { name: 'Laptops', icon: FiMonitor, count: 28 },
-    { name: 'Audio', icon: FiHeadphones, count: 45 },
-    { name: 'Smart Home', icon: FiWifi, count: 35 },
-    { name: 'Gaming', icon: FiCpu, count: 25 },
-    { name: 'Accessories', icon: FiGift, count: 18 },
-    { name: 'Storage', icon: FiBox, count: 20 },
-    { name: 'Other', icon: FiTag, count: 10 },
+    { name: 'Smartphones', icon: FiSmartphone },
+    { name: 'Laptops', icon: FiMonitor },
+    { name: 'Audio', icon: FiHeadphones },
+    { name: 'Smart Home', icon: FiWifi },
+    { name: 'Gaming', icon: FiCpu },
+    { name: 'Accessories', icon: FiGift },
+    { name: 'Storage', icon: FiBox },
+    { name: 'Other', icon: FiTag },
   ];
 
   const features = [
@@ -194,7 +194,6 @@ export default function ElectronicsPage() {
                   <category.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <h3 className="text-sm sm:text-base lg:text-heading-4 mb-1 sm:mb-2">{category.name}</h3>
-                <p className="text-xs sm:text-sm lg:text-caption">{category.count} items</p>
               </motion.div>
             ))}
           </div>

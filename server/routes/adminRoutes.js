@@ -4,7 +4,11 @@ const {
   getUsersAnalytics,
   getSalesAnalytics,
   updateOrderStatus,
-  createAdmin
+  createAdmin,
+  getHomepageSections,
+  updateProductSections,
+  batchUpdateSections,
+  getProductsForSections
 } = require('../controllers/adminController');
 
 const { protect, authorize } = require('../middleware/auth');
@@ -27,5 +31,11 @@ router.put('/orders/:id/status', updateOrderStatus);
 
 // Admin user management
 router.post('/create', createAdmin);
+
+// Homepage sections management
+router.get('/homepage-sections', getHomepageSections);
+router.get('/products-for-sections', getProductsForSections);
+router.put('/homepage-sections/batch', batchUpdateSections);
+router.put('/homepage-sections/:id', updateProductSections);
 
 module.exports = router;

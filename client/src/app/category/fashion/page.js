@@ -37,7 +37,7 @@ export default function FashionPage() {
     const fetchProducts = async () => {
       try {
         const response = await productsAPI.getProducts({ 
-          category: 'fashion',
+          category: 'Fashion',
           limit: 50 
         });
         const productsData = response.data?.data || [];
@@ -52,14 +52,14 @@ export default function FashionPage() {
   }, []);
 
   const fashionCategories = [
-    { name: "Men's Clothing", icon: FiUser, count: 45 },
-    { name: "Women's Clothing", icon: FiUser, count: 68 },
-    { name: 'Accessories', icon: FiShoppingBag, count: 32 },
-    { name: 'Footwear', icon: FiBox, count: 28 },
-    { name: 'Jewelry', icon: FiGift, count: 25 },
-    { name: 'Bags', icon: FiShoppingBag, count: 18 },
-    { name: 'Watches', icon: FiGrid, count: 22 },
-    { name: 'Sunglasses', icon: FiTrendingUp, count: 15 },
+    { name: "Men's Clothing", icon: FiUser },
+    { name: "Women's Clothing", icon: FiUser },
+    { name: 'Accessories', icon: FiShoppingBag },
+    { name: 'Footwear', icon: FiBox },
+    { name: 'Jewelry', icon: FiGift },
+    { name: 'Bags', icon: FiShoppingBag },
+    { name: 'Watches', icon: FiGrid },
+    { name: 'Sunglasses', icon: FiTrendingUp },
   ];
 
   const features = [
@@ -190,7 +190,6 @@ export default function FashionPage() {
                   <category.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <h3 className="text-sm sm:text-base lg:text-heading-4 mb-1 sm:mb-2">{category.name}</h3>
-                <p className="text-xs sm:text-sm lg:text-caption">{category.count} items</p>
               </motion.div>
             ))}
           </div>

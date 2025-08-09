@@ -38,7 +38,7 @@ export default function SportsPage() {
     const fetchProducts = async () => {
       try {
         const response = await productsAPI.getProducts({ 
-          category: 'sports',
+          category: 'Sports',
           limit: 50 
         });
         const productsData = response.data?.data || [];
@@ -53,14 +53,14 @@ export default function SportsPage() {
   }, []);
 
   const sportsCategories = [
-    { name: 'Fitness', icon: FiActivity, count: 45 },
-    { name: 'Running', icon: FiTrendingUp, count: 32 },
-    { name: 'Team Sports', icon: FiGrid, count: 28 },
-    { name: 'Outdoor', icon: FiZap, count: 35 },
-    { name: 'Swimming', icon: FiBox, count: 18 },
-    { name: 'Yoga', icon: FiUser, count: 22 },
-    { name: 'Cycling', icon: FiBox, count: 25 },
-    { name: 'Protection', icon: FiTag, count: 15 },
+    { name: 'Fitness', icon: FiActivity },
+    { name: 'Running', icon: FiTrendingUp },
+    { name: 'Team Sports', icon: FiGrid },
+    { name: 'Outdoor', icon: FiZap },
+    { name: 'Swimming', icon: FiBox },
+    { name: 'Yoga', icon: FiUser },
+    { name: 'Cycling', icon: FiBox },
+    { name: 'Protection', icon: FiTag },
   ];
 
   const features = [
@@ -191,7 +191,6 @@ export default function SportsPage() {
                   <category.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <h3 className="text-sm sm:text-base lg:text-heading-4 mb-1 sm:mb-2">{category.name}</h3>
-                <p className="text-xs sm:text-sm lg:text-caption">{category.count} items</p>
               </motion.div>
             ))}
           </div>

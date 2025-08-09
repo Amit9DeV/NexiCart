@@ -16,32 +16,78 @@ exports.addOrderItems = async (req, res, next) => {
       totalPrice,
     } = req.body;
 
-    if (orderItems && orderItems.length === 0) {
+    // Validate required fields
+    if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({
         success: false,
-        error: 'No order items'
+        error: 'No order items provided'
+      });
+    }
+
+    if (!shippingAddress) {
+      return res.status(400).json({
+        success: false,
+        error: 'Shipping address is required'
+      });
+    }
+
+    if (!paymentMethod) {
+      return res.status(400).json({
+        success: false,
+        error: 'Payment method is required'
       });
     }
 
     // Check if all products exist and have sufficient stock
+    const validatedItems = [];
     for (let item of orderItems) {
-      const product = await Product.findById(item.product);
+      let product;
+      
+      // Try to find by ObjectId first, then by name if not found
+      try {
+        product = await Product.findById(item.product);
+      } catch (error) {
+        // If ObjectId is invalid, try to find by name
+        product = await Product.findOne({ name: { $regex: item.name, $options: 'i' } });
+      }
+
+      // If still not found by ID or name, try to find any similar product
+      if (!product && item.name) {
+        product = await Product.findOne({ 
+          $or: [
+            { name: { $regex: item.name.replace(/[^a-zA-Z0-9\s]/g, ''), $options: 'i' } },
+            { brand: { $regex: item.name, $options: 'i' } }
+          ]
+        });
+      }
+
       if (!product) {
         return res.status(404).json({
           success: false,
-          error: `Product with id ${item.product} not found`
+          error: `Product "${item.name}" not found. Please refresh the product catalog.`,
+          productId: item.product
         });
       }
+
       if (product.stock < item.quantity) {
         return res.status(400).json({
           success: false,
-          error: `Insufficient stock for product ${product.name}`
+          error: `Insufficient stock for ${product.name}. Available: ${product.stock}, Requested: ${item.quantity}`
         });
       }
+
+      // Use the actual product data from database
+      validatedItems.push({
+        product: product._id,
+        name: product.name,
+        quantity: item.quantity,
+        price: product.discountPrice || product.price,
+        image: product.images && product.images.length > 0 ? product.images[0].url : item.image
+      });
     }
 
     const order = new Order({
-      orderItems,
+      orderItems: validatedItems,
       user: req.user._id,
       shippingAddress,
       paymentMethod,
@@ -54,7 +100,7 @@ exports.addOrderItems = async (req, res, next) => {
     const createdOrder = await order.save();
 
     // Update product stock
-    for (let item of orderItems) {
+    for (let item of validatedItems) {
       await Product.findByIdAndUpdate(
         item.product,
         { $inc: { stock: -item.quantity } },
@@ -67,9 +113,10 @@ exports.addOrderItems = async (req, res, next) => {
       data: createdOrder
     });
   } catch (error) {
-    res.status(400).json({
+    console.error('Error in addOrderItems:', error);
+    res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message || 'Internal server error'
     });
   }
 };
@@ -124,14 +171,47 @@ exports.updateOrderToPaid = async (req, res, next) => {
       });
     }
 
+    // Check if user owns the order
+    if (order.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(401).json({
+        success: false,
+        error: 'Not authorized to update this order'
+      });
+    }
+
     order.isPaid = true;
     order.paidAt = Date.now();
-    order.paymentResult = {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.payer.email_address,
-    };
+    order.status = 'processing';
+    
+    // Handle different payment methods
+    if (req.body.paymentMethod === 'upi' || req.body.paymentMethod === 'razorpay') {
+      order.paymentResult = {
+        id: req.body.razorpay_payment_id || req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time || new Date().toISOString(),
+        razorpay_payment_id: req.body.razorpay_payment_id,
+        razorpay_order_id: req.body.razorpay_order_id,
+        razorpay_signature: req.body.razorpay_signature,
+        method: req.body.method,
+        amount: req.body.amount,
+        currency: req.body.currency || 'INR'
+      };
+      
+      // Add UPI specific details
+      if (req.body.upi) {
+        order.paymentResult.upi = {
+          vpa: req.body.upi.vpa
+        };
+      }
+    } else {
+      // PayPal or Stripe payment
+      order.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.payer ? req.body.payer.email_address : req.body.email_address,
+      };
+    }
 
     const updatedOrder = await order.save();
 

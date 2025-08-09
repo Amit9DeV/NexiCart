@@ -66,11 +66,11 @@ const ProductCard = ({ product }) => {
 
           <div className="flex items-baseline space-x-2">
             <span className="text-2xl font-extrabold text-indigo-600">
-              ${displayPrice.toFixed(2)}
+              ₹{displayPrice.toFixed(2)}
             </span>
             {hasDiscount && (
               <span className="text-sm text-gray-400 line-through">
-                ${product.price.toFixed(2)}
+                ₹{product.price.toFixed(2)}
               </span>
             )}
           </div>

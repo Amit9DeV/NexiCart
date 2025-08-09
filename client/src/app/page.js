@@ -25,25 +25,41 @@ import {
 } from 'react-icons/fi';
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [heroProducts, setHeroProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchHomepageData = async () => {
       try {
-        const response = await productsAPI.getProducts({ limit: 12 });
-        const productsData = response.data?.data || [];
-        setProducts(productsData.slice(0, 8));
-        setFeaturedProducts(productsData.filter(p => p.isFeatured || p.rating > 4).slice(0, 4));
+        const [heroResponse, featuredResponse, newArrivalsResponse] = await Promise.all([
+          productsAPI.getHeroProducts(),
+          productsAPI.getFeaturedProducts(),
+          productsAPI.getNewArrivals()
+        ]);
+        
+        setHeroProducts(heroResponse.data?.data || []);
+        setFeaturedProducts(featuredResponse.data?.data || []);
+        setNewArrivals(newArrivalsResponse.data?.data || []);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching homepage data:', error);
+        // Fallback to regular products if homepage APIs fail
+        try {
+          const response = await productsAPI.getProducts({ limit: 12 });
+          const productsData = response.data?.data || [];
+          setHeroProducts(productsData.slice(0, 4));
+          setFeaturedProducts(productsData.filter(p => p.isFeatured || p.ratings?.average > 4).slice(0, 4));
+          setNewArrivals(productsData.slice(4, 8));
+        } catch (fallbackError) {
+          console.error('Error fetching fallback products:', fallbackError);
+        }
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchHomepageData();
   }, []);
 
   const features = [
@@ -177,7 +193,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl lg:rounded-3xl transform -rotate-3"></div>
                 <div className="relative bg-white rounded-2xl lg:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl">
                   <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                    {products.slice(0, 4).map((product, index) => (
+                    {heroProducts.slice(0, 4).map((product, index) => (
                       <motion.div
                         key={product._id}
                         initial={{ opacity: 0, scale: 0.8 }}
@@ -186,13 +202,15 @@ export default function Home() {
                         className="card-nexkartin p-3 sm:p-4 hover-lift"
                       >
                         <div className="w-full h-16 sm:h-20 lg:h-24 bg-gray-100 rounded-lg mb-2 sm:mb-3">
-                          <Image 
-                            className='w-full h-full object-cover' 
-                            src={product.images[0].url} 
-                            alt={product.name}
-                            width={200}
-                            height={200}
-                          />
+                          {product.images && product.images[0] && (
+                            <Image 
+                              className='w-full h-full object-cover' 
+                              src={product.images[0].url} 
+                              alt={product.name}
+                              width={200}
+                              height={200}
+                            />
+                          )}
                         </div>
                         <h3 className="font-semibold text-xs sm:text-sm text-gray-900 line-clamp-2">{product.name}</h3>
                         <p className="text-sm sm:text-lg font-bold text-indigo-600">${product.price}</p>
@@ -328,7 +346,7 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {products.slice(0, 8).map((product, index) => (
+            {newArrivals.map((product, index) => (
               <motion.div
                 key={product._id}
                 initial={{ opacity: 0, y: 20 }}

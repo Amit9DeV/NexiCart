@@ -39,7 +39,7 @@ export default function BooksPage() {
     const fetchProducts = async () => {
       try {
         const response = await productsAPI.getProducts({ 
-          category: 'books',
+          category: 'Books',
           limit: 50 
         });
         const productsData = response.data?.data || [];
@@ -54,14 +54,14 @@ export default function BooksPage() {
   }, []);
 
   const booksCategories = [
-    { name: 'Fiction', icon: FiBookOpen, count: 125 },
-    { name: 'Non-Fiction', icon: FiBook, count: 98 },
-    { name: 'Academic', icon: FiGrid, count: 75 },
-    { name: 'Children', icon: FiGift, count: 65 },
-    { name: 'Biography', icon: FiUser, count: 45 },
-    { name: 'Self-Help', icon: FiTrendingUp, count: 55 },
-    { name: 'Science', icon: FiZap, count: 40 },
-    { name: 'History', icon: FiAward, count: 35 },
+    { name: 'Fiction', icon: FiBookOpen },
+    { name: 'Non-Fiction', icon: FiBook },
+    { name: 'Academic', icon: FiGrid },
+    { name: 'Children', icon: FiGift },
+    { name: 'Biography', icon: FiUser },
+    { name: 'Self-Help', icon: FiTrendingUp },
+    { name: 'Science', icon: FiZap },
+    { name: 'History', icon: FiAward },
   ];
 
   const features = [
@@ -192,7 +192,6 @@ export default function BooksPage() {
                   <category.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <h3 className="text-sm sm:text-base lg:text-heading-4 mb-1 sm:mb-2">{category.name}</h3>
-                <p className="text-xs sm:text-sm lg:text-caption">{category.count} items</p>
               </motion.div>
             ))}
           </div>

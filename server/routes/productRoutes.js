@@ -6,7 +6,11 @@ const {
   updateProduct,
   deleteProduct,
   getProductsByCategory,
-  searchProducts
+  searchProducts,
+  getHeroProducts,
+  getFeaturedProducts,
+  getNewArrivals,
+  getCategories
 } = require('../controllers/productController');
 
 const { protect, authorize } = require('../middleware/auth');
@@ -20,8 +24,21 @@ router.route('/')
 router.route('/search/:searchterm')
   .get(searchProducts);
 
+router.route('/categories')
+  .get(getCategories);
+
 router.route('/category/:category')
   .get(getProductsByCategory);
+
+// Homepage section routes
+router.route('/homepage/hero')
+  .get(getHeroProducts);
+
+router.route('/homepage/featured')
+  .get(getFeaturedProducts);
+
+router.route('/homepage/new-arrivals')
+  .get(getNewArrivals);
 
 router.route('/:id')
   .get(getProduct)

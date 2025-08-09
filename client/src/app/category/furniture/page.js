@@ -38,7 +38,7 @@ export default function FurniturePage() {
     const fetchProducts = async () => {
       try {
         const response = await productsAPI.getProducts({ 
-          category: 'furniture',
+          category: 'Furniture',
           limit: 50 
         });
         const productsData = response.data?.data || [];
@@ -53,12 +53,12 @@ export default function FurniturePage() {
   }, []);
 
   const furnitureCategories = [
-    { name: 'Living Room', icon: FiHome, count: 24 },
-    { name: 'Bedroom', icon: FiBox, count: 18 },
-    { name: 'Dining Room', icon: FiGrid, count: 12 },
-    { name: 'Office', icon: FiArchive, count: 15 },
-    { name: 'Outdoor', icon: FiSun, count: 8 },
-    { name: 'Lighting', icon: FiTag, count: 20 },
+    { name: 'Living Room', icon: FiHome },
+    { name: 'Bedroom', icon: FiBox },
+    { name: 'Dining Room', icon: FiGrid },
+    { name: 'Office', icon: FiArchive },
+    { name: 'Outdoor', icon: FiSun },
+    { name: 'Lighting', icon: FiTag },
   ];
 
   const features = [
@@ -189,7 +189,6 @@ export default function FurniturePage() {
                   <category.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <h3 className="text-sm sm:text-base lg:text-heading-4 mb-1 sm:mb-2">{category.name}</h3>
-                <p className="text-xs sm:text-sm lg:text-caption">{category.count} items</p>
               </motion.div>
             ))}
           </div>

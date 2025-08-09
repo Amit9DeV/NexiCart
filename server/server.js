@@ -74,10 +74,37 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/profile', require('./routes/profileRoutes'));
+app.use('/api/payments', require('./routes/paymentRoutes'));
+
+
+// 404 handler - must be after all routes
+app.use((req, res, next) => {
+  console.log(`❌ 404 - Route not found: ${req.method} ${req.path}`);
+  res.status(404).json({
+    success: false,
+    error: `Route ${req.method} ${req.path} not found`
+  });
+});
 
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  // List all registered routes for debugging
+  console.log('\nRegistered routes:');
+  app._router.stack.forEach((r) => {
+    if (r.route && r.route.path) {
+      console.log(`${Object.keys(r.route.methods).join(',').toUpperCase()} ${r.route.path}`);
+    } else if (r.name === 'router') {
+      r.handle.stack.forEach((handler) => {
+        if (handler.route) {
+          console.log(`${Object.keys(handler.route.methods).join(',').toUpperCase()} ${handler.route.path}`);
+        }
+      });
+    }
+  });
+});
 

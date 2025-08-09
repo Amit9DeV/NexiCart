@@ -27,6 +27,8 @@ const productSchema = new mongoose.Schema({
     enum: [
       'Electronics',
       'Clothing',
+      'Fashion',
+      'Furniture',
       'Books',
       'Home & Garden',
       'Sports',
@@ -80,6 +82,26 @@ const productSchema = new mongoose.Schema({
   isFeatured: {
     type: Boolean,
     default: false
+  },
+  showInHero: {
+    type: Boolean,
+    default: false
+  },
+  showInNewArrivals: {
+    type: Boolean,
+    default: false
+  },
+  heroOrder: {
+    type: Number,
+    default: 0
+  },
+  featuredOrder: {
+    type: Number,
+    default: 0
+  },
+  newArrivalsOrder: {
+    type: Number,
+    default: 0
   },
   slug: {
     type: String,

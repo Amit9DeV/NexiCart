@@ -186,6 +186,11 @@ export default function AdminDashboard() {
               Analytics
             </Button>
           </Link>
+          <Link href="/admin/homepage-sections">
+            <Button className="bg-pink-600 hover:bg-pink-700 text-white">
+              Homepage Sections
+            </Button>
+          </Link>
           <Link href="/admin/settings">
             <Button className="bg-red-600 hover:bg-red-700 text-white">
               System Settings

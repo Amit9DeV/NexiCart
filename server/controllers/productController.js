@@ -246,3 +246,106 @@ exports.searchProducts = async (req, res, next) => {
     });
   }
 };
+
+// @desc    Get homepage hero products
+// @route   GET /api/products/homepage/hero
+// @access  Public
+exports.getHeroProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find({ 
+      showInHero: true, 
+      isActive: true 
+    })
+    .sort({ heroOrder: 1, createdAt: -1 })
+    .limit(8)
+    .populate('createdBy', 'name email');
+
+    res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Get featured products
+// @route   GET /api/products/homepage/featured
+// @access  Public
+exports.getFeaturedProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find({ 
+      isFeatured: true, 
+      isActive: true 
+    })
+    .sort({ featuredOrder: 1, createdAt: -1 })
+    .limit(8)
+    .populate('createdBy', 'name email');
+
+    res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Get new arrival products
+// @route   GET /api/products/homepage/new-arrivals
+// @access  Public
+exports.getNewArrivals = async (req, res, next) => {
+  try {
+    const products = await Product.find({ 
+      showInNewArrivals: true, 
+      isActive: true 
+    })
+    .sort({ newArrivalsOrder: 1, createdAt: -1 })
+    .limit(8)
+    .populate('createdBy', 'name email');
+
+    res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Get all available categories
+// @route   GET /api/products/categories
+// @access  Public
+exports.getCategories = async (req, res, next) => {
+  try {
+    const categories = await Product.aggregate([
+      { $match: { isActive: true } },
+      { $group: { _id: '$category', count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+      { $project: { category: '$_id', count: 1, _id: 0 } }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      count: categories.length,
+      data: categories
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+};

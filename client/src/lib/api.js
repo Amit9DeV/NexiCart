@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 const API_BASE_URL = "https://nexicart.onrender.com/api";
+// const API_BASE_URL = process.env.NODE_ENV === 'development' ? "/api" : "http://localhost:5000/api";
+
 
 console.log('API_BASE_URL:', API_BASE_URL);
 console.log('Environment:', process.env.NODE_ENV);
@@ -79,8 +81,13 @@ export const productsAPI = {
   createProduct: (productData) => api.post('/products', productData),
   updateProduct: (id, productData) => api.put(`/products/${id}`, productData),
   deleteProduct: (id) => api.delete(`/products/${id}`),
+  getCategories: () => api.get('/products/categories'),
   getProductsByCategory: (category) => api.get(`/products/category/${category}`),
   searchProducts: (searchTerm) => api.get(`/products/search/${searchTerm}`),
+  // Homepage sections
+  getHeroProducts: () => api.get('/products/homepage/hero'),
+  getFeaturedProducts: () => api.get('/products/homepage/featured'),
+  getNewArrivals: () => api.get('/products/homepage/new-arrivals'),
 };
 
 // Orders API
@@ -106,6 +113,38 @@ export const usersAPI = {
   getWishlist: () => api.get('/users/wishlist'),
   addToWishlist: (productId) => api.post(`/users/wishlist/${productId}`),
   removeFromWishlist: (productId) => api.delete(`/users/wishlist/${productId}`),
+  updatePassword: (passwordData) => api.put('/auth/updatepassword', passwordData),
+};
+
+// Profile API
+export const profileAPI = {
+  getProfile: () => api.get('/profile'),
+  updateProfile: (profileData) => api.put('/profile', profileData),
+  getAddresses: () => api.get('/profile/addresses'),
+  addAddress: (addressData) => api.post('/profile/addresses', addressData),
+  updateAddress: (addressId, addressData) => api.put(`/profile/addresses/${addressId}`, addressData),
+  deleteAddress: (addressId) => api.delete(`/profile/addresses/${addressId}`),
+  getOrderHistory: (params = {}) => api.get('/profile/orders', { params }),
+  getOrderStats: () => api.get('/profile/orders/stats'),
+  getWishlist: () => api.get('/profile/wishlist'),
+  addToWishlist: (productId) => api.post(`/profile/wishlist/${productId}`),
+  removeFromWishlist: (productId) => api.delete(`/profile/wishlist/${productId}`),
+  updatePreferences: (preferences) => api.put('/profile/preferences', preferences),
+  updateNotificationSettings: (settings) => api.put('/profile/notifications', settings),
+  updatePrivacySettings: (settings) => api.put('/profile/privacy', settings),
+  updateSecuritySettings: (settings) => api.put('/profile/security', settings),
+  uploadAvatar: (formData) => api.post('/profile/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  getLoyaltyInfo: () => api.get('/profile/loyalty'),
+  getActivityHistory: (params = {}) => api.get('/profile/activity', { params }),
+  getReviewHistory: (params = {}) => api.get('/profile/reviews', { params }),
+  exportData: () => api.get('/profile/export'),
+  deleteAccount: (confirmData) => api.delete('/profile/delete-account', { data: confirmData }),
+  enable2FA: () => api.post('/profile/2fa/enable'),
+  verify2FA: (tokenData) => api.post('/profile/2fa/verify', tokenData),
+  disable2FA: (tokenData) => api.post('/profile/2fa/disable', tokenData),
+  getSecurityLogs: () => api.get('/profile/security/logs'),
 };
 
 // Reviews API
@@ -132,6 +171,11 @@ export const adminAPI = {
   getSalesAnalytics: (period) => api.get(`/admin/analytics/sales?period=${period}`),
   updateOrderStatus: (orderId, status) => api.put(`/admin/orders/${orderId}/status`, { status }),
   createAdmin: (adminData) => api.post('/admin/create', adminData),
+  // Homepage sections management
+  getHomepageSections: () => api.get('/admin/homepage-sections'),
+  getProductsForSections: (params = {}) => api.get('/admin/products-for-sections', { params }),
+  updateProductSections: (productId, sectionData) => api.put(`/admin/homepage-sections/${productId}`, sectionData),
+  batchUpdateSections: (updates) => api.put('/admin/homepage-sections/batch', { updates }),
 };
 
 export default api;

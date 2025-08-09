@@ -37,7 +37,7 @@ export default function HomeGardenPage() {
     const fetchProducts = async () => {
       try {
         const response = await productsAPI.getProducts({ 
-          category: 'home-garden',
+          category: 'Home & Garden',
           limit: 50 
         });
         const productsData = response.data?.data || [];
@@ -52,14 +52,14 @@ export default function HomeGardenPage() {
   }, []);
 
   const homeGardenCategories = [
-    { name: 'Indoor Plants', icon: FiHome, count: 35 },
-    { name: 'Outdoor Garden', icon: FiBox, count: 42 },
-    { name: 'Decor', icon: FiGift, count: 28 },
-    { name: 'Lighting', icon: FiSun, count: 22 },
-    { name: 'Kitchen', icon: FiBox, count: 38 },
-    { name: 'Bathroom', icon: FiGift, count: 25 },
-    { name: 'Storage', icon: FiBox, count: 18 },
-    { name: 'Tools', icon: FiTag, count: 15 },
+    { name: 'Indoor Plants', icon: FiHome },
+    { name: 'Outdoor Garden', icon: FiBox },
+    { name: 'Decor', icon: FiGift },
+    { name: 'Lighting', icon: FiSun },
+    { name: 'Kitchen', icon: FiBox },
+    { name: 'Bathroom', icon: FiGift },
+    { name: 'Storage', icon: FiBox },
+    { name: 'Tools', icon: FiTag },
   ];
 
   const features = [
@@ -190,7 +190,6 @@ export default function HomeGardenPage() {
                   <category.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" />
                 </div>
                 <h3 className="text-sm sm:text-base lg:text-heading-4 mb-1 sm:mb-2">{category.name}</h3>
-                <p className="text-xs sm:text-sm lg:text-caption">{category.count} items</p>
               </motion.div>
             ))}
           </div>

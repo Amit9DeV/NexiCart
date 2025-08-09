@@ -811,6 +811,239 @@ const products = [
     },
     tags: ['protein', 'nutrition', 'fitness', 'supplement'],
     ratings: { average: 4.6, count: 267 }
+  },
+
+  // FURNITURE Category Products
+  {
+    name: 'Modern Sectional Sofa',
+    description: 'Comfortable L-shaped sectional sofa with premium fabric upholstery and sturdy wooden frame.',
+    price: 1299.99,
+    discountPrice: 1099.99,
+    category: 'Furniture',
+    brand: 'ComfortLiving',
+    stock: 15,
+    images: [{ url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500', alt: 'Sectional Sofa' }],
+    features: ['L-shaped design', 'Premium fabric', 'Sturdy wooden frame', 'Easy assembly'],
+    specifications: {
+      'Dimensions': '110" x 85" x 35"',
+      'Material': 'Fabric upholstery, wooden frame',
+      'Seating Capacity': '5-6 people',
+      'Weight': '150 lbs'
+    },
+    tags: ['sofa', 'sectional', 'living room', 'modern'],
+    isFeatured: true,
+    ratings: { average: 4.6, count: 89 }
+  },
+  {
+    name: 'Dining Table Set',
+    description: '6-piece dining table set with solid wood construction and comfortable padded chairs.',
+    price: 899.99,
+    discountPrice: 799.99,
+    category: 'Furniture',
+    brand: 'WoodCraft',
+    stock: 20,
+    images: [{ url: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=500', alt: 'Dining Table Set' }],
+    features: ['Solid wood construction', '6 chairs included', 'Padded seating', 'Classic design'],
+    specifications: {
+      'Table Dimensions': '72" x 36" x 30"',
+      'Material': 'Solid oak wood',
+      'Seating': '6 chairs',
+      'Finish': 'Natural oak stain'
+    },
+    tags: ['dining', 'table', 'chairs', 'wood'],
+    ratings: { average: 4.5, count: 156 }
+  },
+  {
+    name: 'Queen Size Bed Frame',
+    description: 'Elegant queen size bed frame with upholstered headboard and platform base.',
+    price: 649.99,
+    category: 'Furniture',
+    brand: 'BedMaster',
+    stock: 25,
+    images: [{ url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500', alt: 'Queen Bed Frame' }],
+    features: ['Queen size', 'Upholstered headboard', 'Platform base', 'No box spring needed'],
+    specifications: {
+      'Size': 'Queen (60" x 80")',
+      'Height': '14" platform height',
+      'Material': 'Metal frame, fabric headboard',
+      'Weight Capacity': '600 lbs'
+    },
+    tags: ['bed', 'queen', 'bedroom', 'platform'],
+    ratings: { average: 4.7, count: 203 }
+  },
+  {
+    name: 'Office Desk Chair',
+    description: 'Ergonomic office chair with lumbar support, adjustable height, and breathable mesh back.',
+    price: 299.99,
+    discountPrice: 249.99,
+    category: 'Furniture',
+    brand: 'ErgoWork',
+    stock: 35,
+    images: [{ url: 'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=500', alt: 'Office Chair' }],
+    features: ['Ergonomic design', 'Lumbar support', 'Adjustable height', 'Breathable mesh'],
+    specifications: {
+      'Height Range': '17"-21"',
+      'Weight Capacity': '300 lbs',
+      'Material': 'Mesh back, fabric seat',
+      'Warranty': '5 years'
+    },
+    tags: ['office', 'chair', 'ergonomic', 'desk'],
+    ratings: { average: 4.4, count: 287 }
+  },
+  {
+    name: 'Coffee Table with Storage',
+    description: 'Modern coffee table with built-in storage compartment and sleek glass top.',
+    price: 399.99,
+    category: 'Furniture',
+    brand: 'ModernLiving',
+    stock: 30,
+    images: [{ url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500', alt: 'Coffee Table' }],
+    features: ['Glass top', 'Built-in storage', 'Modern design', 'Sturdy base'],
+    specifications: {
+      'Dimensions': '48" x 24" x 18"',
+      'Material': 'Tempered glass, engineered wood',
+      'Storage': 'Hidden compartment',
+      'Style': 'Contemporary'
+    },
+    tags: ['coffee table', 'storage', 'glass', 'modern'],
+    ratings: { average: 4.3, count: 134 }
+  },
+  {
+    name: 'Bookshelf 5-Tier',
+    description: 'Tall 5-tier bookshelf with adjustable shelves and modern industrial design.',
+    price: 179.99,
+    discountPrice: 149.99,
+    category: 'Furniture',
+    brand: 'ShelfMaster',
+    stock: 45,
+    images: [{ url: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=500', alt: 'Bookshelf' }],
+    features: ['5 tiers', 'Adjustable shelves', 'Industrial design', 'Sturdy construction'],
+    specifications: {
+      'Dimensions': '71" x 31" x 12"',
+      'Shelves': '5 adjustable',
+      'Material': 'Metal frame, wood shelves',
+      'Weight Capacity': '40 lbs per shelf'
+    },
+    tags: ['bookshelf', 'storage', 'industrial', 'shelving'],
+    ratings: { average: 4.5, count: 198 }
+  },
+
+  // FASHION Category Products
+  {
+    name: 'Designer Leather Handbag',
+    description: 'Premium leather handbag with gold hardware and multiple compartments for style and function.',
+    price: 299.99,
+    discountPrice: 249.99,
+    category: 'Fashion',
+    brand: 'LuxeStyle',
+    stock: 40,
+    images: [{ url: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500', alt: 'Leather Handbag' }],
+    features: ['Genuine leather', 'Gold hardware', 'Multiple compartments', 'Adjustable strap'],
+    specifications: {
+      'Material': '100% genuine leather',
+      'Dimensions': '12" x 8" x 5"',
+      'Strap': 'Adjustable 22"-26"',
+      'Closure': 'Zip closure'
+    },
+    tags: ['handbag', 'leather', 'designer', 'luxury'],
+    isFeatured: true,
+    ratings: { average: 4.8, count: 167 }
+  },
+  {
+    name: 'Silk Scarf Collection',
+    description: 'Set of 3 premium silk scarves with elegant prints and versatile styling options.',
+    price: 89.99,
+    discountPrice: 69.99,
+    category: 'Fashion',
+    brand: 'SilkElegance',
+    stock: 60,
+    images: [{ url: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500', alt: 'Silk Scarves' }],
+    features: ['100% silk', '3 different designs', 'Versatile styling', 'Premium quality'],
+    specifications: {
+      'Material': '100% mulberry silk',
+      'Dimensions': '35" x 35" each',
+      'Designs': '3 unique patterns',
+      'Care': 'Dry clean only'
+    },
+    tags: ['scarf', 'silk', 'fashion', 'accessory'],
+    ratings: { average: 4.6, count: 124 }
+  },
+  {
+    name: 'Statement Jewelry Set',
+    description: 'Bold statement jewelry set including necklace, earrings, and bracelet with crystal accents.',
+    price: 149.99,
+    discountPrice: 119.99,
+    category: 'Fashion',
+    brand: 'GlamourJewels',
+    stock: 75,
+    images: [{ url: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500', alt: 'Jewelry Set' }],
+    features: ['3-piece set', 'Crystal accents', 'Gold-plated', 'Statement design'],
+    specifications: {
+      'Material': 'Gold-plated alloy, crystals',
+      'Set Includes': 'Necklace, earrings, bracelet',
+      'Plating': '18k gold',
+      'Style': 'Contemporary'
+    },
+    tags: ['jewelry', 'statement', 'crystal', 'set'],
+    ratings: { average: 4.4, count: 189 }
+  },
+  {
+    name: 'Designer Sunglasses',
+    description: 'Premium designer sunglasses with UV protection and polarized lenses for style and function.',
+    price: 199.99,
+    discountPrice: 159.99,
+    category: 'Fashion',
+    brand: 'VisionLux',
+    stock: 85,
+    images: [{ url: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500', alt: 'Designer Sunglasses' }],
+    features: ['Polarized lenses', 'UV protection', 'Designer frames', 'Scratch resistant'],
+    specifications: {
+      'Lens': 'Polarized, UV400',
+      'Frame Material': 'Acetate',
+      'Lens Width': '55mm',
+      'Protection': '100% UV protection'
+    },
+    tags: ['sunglasses', 'designer', 'polarized', 'uv'],
+    ratings: { average: 4.7, count: 234 }
+  },
+  {
+    name: 'Fashion Watch Collection',
+    description: 'Elegant fashion watch with stainless steel band and water-resistant design.',
+    price: 129.99,
+    discountPrice: 99.99,
+    category: 'Fashion',
+    brand: 'TimeStyle',
+    stock: 95,
+    images: [{ url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500', alt: 'Fashion Watch' }],
+    features: ['Stainless steel', 'Water resistant', 'Quartz movement', 'Elegant design'],
+    specifications: {
+      'Movement': 'Japanese quartz',
+      'Water Resistance': '30 meters',
+      'Case Diameter': '40mm',
+      'Band Material': 'Stainless steel'
+    },
+    tags: ['watch', 'fashion', 'stainless steel', 'elegant'],
+    ratings: { average: 4.5, count: 298 }
+  },
+  {
+    name: 'Luxury Perfume Set',
+    description: 'Collection of 4 luxury perfumes with different scent profiles in elegant bottles.',
+    price: 199.99,
+    discountPrice: 169.99,
+    category: 'Fashion',
+    brand: 'FragranceLux',
+    stock: 50,
+    images: [{ url: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=500', alt: 'Perfume Set' }],
+    features: ['4 different scents', 'Long-lasting formula', 'Elegant bottles', 'Gift packaging'],
+    specifications: {
+      'Volume': '30ml each (4 bottles)',
+      'Scent Types': 'Floral, Woody, Fresh, Oriental',
+      'Longevity': '6-8 hours',
+      'Packaging': 'Premium gift box'
+    },
+    tags: ['perfume', 'fragrance', 'luxury', 'gift'],
+    isFeatured: true,
+    ratings: { average: 4.9, count: 156 }
   }
 ];
 
