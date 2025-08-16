@@ -38,27 +38,27 @@ export default function HomepageSectionsAdmin() {
   ];
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const params = {
+          page: currentPage,
+          limit: 20,
+          search: searchTerm,
+          category: categoryFilter
+        };
+        const response = await adminAPI.getProductsForSections(params);
+        setProducts(response.data.data.products);
+        setTotalPages(response.data.data.pagination.pages);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        toast.error('Failed to load products');
+        setLoading(false);
+      }
+    };
+    
     fetchProducts();
   }, [currentPage, searchTerm, categoryFilter]);
-
-  const fetchProducts = async () => {
-    try {
-      const params = {
-        page: currentPage,
-        limit: 20,
-        search: searchTerm,
-        category: categoryFilter
-      };
-      const response = await adminAPI.getProductsForSections(params);
-      setProducts(response.data.data.products);
-      setTotalPages(response.data.data.pagination.pages);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      toast.error('Failed to load products');
-      setLoading(false);
-    }
-  };
 
   const handleSectionToggle = (productId, section, value) => {
     setChanges(prev => ({
@@ -103,7 +103,17 @@ export default function HomepageSectionsAdmin() {
       await adminAPI.batchUpdateSections(updates);
       toast.success(`Successfully updated ${updates.length} products`);
       setChanges({});
-      await fetchProducts(); // Refresh the data
+      
+      // Refresh the data
+      const params = {
+        page: currentPage,
+        limit: 20,
+        search: searchTerm,
+        category: categoryFilter
+      };
+      const response = await adminAPI.getProductsForSections(params);
+      setProducts(response.data.data.products);
+      setTotalPages(response.data.data.pagination.pages);
     } catch (error) {
       console.error('Error saving changes:', error);
       toast.error('Failed to save changes');

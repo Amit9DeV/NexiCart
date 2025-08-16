@@ -130,10 +130,10 @@ export default function TestAPIPage() {
           </CardHeader>
           <CardContent>
             <div className="text-sm text-gray-600 space-y-2">
-              <p>1. Click "Test Authentication" to test the API calls</p>
+              <p>1. Click &quot;Test Authentication&quot; to test the API calls</p>
               <p>2. Check the browser console (F12) for detailed logs</p>
-              <p>3. If you get 403 errors, try "Clear Auth" and log in again</p>
-              <p>4. The logs will show exactly what's happening with the requests</p>
+              <p>3. If you get 403 errors, try &quot;Clear Auth&quot; and log in again</p>
+              <p>4. The logs will show exactly what&apos;s happening with the requests</p>
             </div>
           </CardContent>
         </Card>

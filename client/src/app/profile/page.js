@@ -190,7 +190,7 @@ export default function ProfilePage() {
                 <p>This usually means:</p>
                 <ul className="list-disc list-inside mt-1 space-y-1">
                   <li>The backend server is not running</li>
-                  <li>There's a network connectivity issue</li>
+                  <li>There&apos;s a network connectivity issue</li>
                   <li>Your authentication token has expired</li>
                 </ul>
                 <p className="mt-2">

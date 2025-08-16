@@ -46,24 +46,25 @@ export default function AdminAnalytics() {
       router.push('/admin/login');
       return;
     }
+    
+    const fetchAnalytics = async () => {
+      try {
+        setLoading(true);
+        const [userRes, salesRes] = await Promise.all([
+          adminAPI.getUsersAnalytics(period),
+          adminAPI.getSalesAnalytics(period)
+        ]);
+        setUserAnalytics(userRes.data.data);
+        setSalesAnalytics(salesRes.data.data);
+      } catch (error) {
+        console.error('Failed to fetch analytics', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
     fetchAnalytics();
-  }, [user, period, fetchAnalytics, router]);
-
-  const fetchAnalytics = async () => {
-    try {
-      setLoading(true);
-      const [userRes, salesRes] = await Promise.all([
-        adminAPI.getUsersAnalytics(period),
-        adminAPI.getSalesAnalytics(period)
-      ]);
-      setUserAnalytics(userRes.data.data);
-      setSalesAnalytics(salesRes.data.data);
-    } catch (error) {
-      console.error('Failed to fetch analytics', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [user, period, router]);
 
   if (!user || user.role !== 'admin') {
     return (

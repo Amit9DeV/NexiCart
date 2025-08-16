@@ -155,7 +155,7 @@ export default function TypographyDemoPage() {
                   placeholder="Enter your email" 
                   className="form-input w-full px-4 py-3 border border-slate-300 rounded-lg bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
                 />
-                <p className="form-help mt-2 text-slate-500">We'll never share your email with anyone else.</p>
+                <p className="form-help mt-2 text-slate-500">We&apos;ll never share your email with anyone else.</p>
               </div>
               <div>
                 <label className="form-label block mb-3 text-slate-700 font-medium">Password</label>
@@ -180,7 +180,7 @@ export default function TypographyDemoPage() {
             <div className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-sm border border-slate-200 transition-all duration-300 hover:shadow-lg hover:border-slate-300 hover:scale-[1.01]">
               <div className="absolute inset-0 bg-gradient-to-r from-slate-50/50 to-gray-50/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
               <div className="relative z-10">
-                <p className="code mb-3 text-slate-800 bg-slate-100 px-3 py-2 rounded-md inline-block">const greeting = "Hello, World!";</p>
+                <p className="code mb-3 text-slate-800 bg-slate-100 px-3 py-2 rounded-md inline-block">const greeting = &quot;Hello, World!&quot;;</p>
                 <p className="caption text-slate-500">Regular code text</p>
               </div>
             </div>
