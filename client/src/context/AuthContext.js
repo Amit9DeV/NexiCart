@@ -34,17 +34,42 @@ export const AuthProvider = ({ children }) => {
       try {
         const parsedUser = JSON.parse(storedUser);
         console.log('🔐 AuthContext: User restored from localStorage:', parsedUser._id);
-        setToken(storedToken);
-        setUser(parsedUser);
+        
+        // Validate the token by making an API call
+        const validateToken = async () => {
+          try {
+            setLoading(true);
+            const response = await authAPI.getMe();
+            console.log('🔐 AuthContext: Token validation successful:', response.data.data._id);
+            setToken(storedToken);
+            setUser(response.data.data); // Use fresh user data from server
+            localStorage.setItem('user', JSON.stringify(response.data.data)); // Update stored user data
+          } catch (error) {
+            console.error('🔐 AuthContext: Token validation failed:', error.response?.status);
+            // Token is invalid, clear everything
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setToken(null);
+            setUser(null);
+            if (error.response?.status === 401) {
+              toast.error('Session expired. Please log in again.');
+            }
+          } finally {
+            setLoading(false);
+          }
+        };
+        
+        validateToken();
       } catch (error) {
         console.error('🔐 AuthContext: Error parsing stored user:', error);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        setLoading(false);
       }
     } else {
       console.log('🔐 AuthContext: No stored credentials found');
+      setLoading(false);
     }
-    setLoading(false);
     console.log('🔐 AuthContext: Initialization complete');
   }, []);
 

@@ -21,6 +21,7 @@ export default function ProfilePage() {
   const [orders, setOrders] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -43,25 +44,52 @@ export default function ProfilePage() {
       const fetchData = async () => {
         try {
           setLoading(true);
+          setError(null);
+          
           const [ordersResponse, wishlistResponse] = await Promise.all([
             ordersAPI.getMyOrders(),
             usersAPI.getWishlist()
           ]);
-          setOrders(ordersResponse.data.data);
-          setWishlist(wishlistResponse.data.data);
+          
+          console.log('Orders response:', ordersResponse);
+          console.log('Wishlist response:', wishlistResponse);
+          
+          const ordersData = ordersResponse.data.data || [];
+          const wishlistData = wishlistResponse.data.data || [];
+          
+          console.log('Setting orders:', ordersData);
+          console.log('Orders length:', ordersData.length);
+          
+          setOrders(ordersData);
+          setWishlist(wishlistData);
           
           // Calculate profile stats
-          const totalSpent = ordersResponse.data.data.reduce((sum, order) => sum + order.totalPrice, 0);
+          const totalSpent = ordersData.reduce((sum, order) => sum + order.totalPrice, 0);
           const loyaltyPoints = Math.floor(totalSpent); // 1 point per dollar
           
           setProfileStats({
-            totalOrders: ordersResponse.data.data.length,
+            totalOrders: ordersData.length,
             totalSpent: totalSpent,
-            wishlistCount: wishlistResponse.data.data.length,
+            wishlistCount: wishlistData.length,
             loyaltyPoints: loyaltyPoints
           });
         } catch (error) {
-          console.error('Failed to fetch user data', error);
+          console.error('Failed to fetch user data:', error);
+          setError({
+            message: 'Failed to load profile data',
+            details: error.response?.data?.error || error.message,
+            status: error.response?.status
+          });
+          
+          // Set empty arrays to prevent crashes
+          setOrders([]);
+          setWishlist([]);
+          setProfileStats({
+            totalOrders: 0,
+            totalSpent: 0,
+            wishlistCount: 0,
+            loyaltyPoints: 0
+          });
         } finally {
           setLoading(false);
         }
@@ -100,8 +128,35 @@ export default function ProfilePage() {
     }
   };
 
-  if (loading) return <p>Loading profile...</p>;
-  if (!user) return <p>Please login to view your profile.</p>;
+  if (loading) return (
+    <div className="min-h-screen bg-white/80 py-8 px-2 sm:px-4 md:px-8">
+      <div className="container-nexkartin">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading profile...</p>
+            <p className="text-sm text-gray-400 mt-2">Validating authentication...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  
+  if (!user) return (
+    <div className="min-h-screen bg-white/80 py-8 px-2 sm:px-4 md:px-8">
+      <div className="container-nexkartin">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Login</h2>
+            <p className="text-gray-600 mb-6">You need to be logged in to view your profile.</p>
+            <Link href="/auth/login" className="btn-nexkartin btn-nexkartin-primary">
+              Go to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-white/80 py-8 px-2 sm:px-4 md:px-8">
@@ -114,6 +169,51 @@ export default function ProfilePage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Profile</h1>
             <p className="text-sm text-gray-500">Manage your account, orders, and wishlist</p>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Error Display */}
+      {error && (
+        <section className="container-nexkartin mb-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-red-800 mb-2">⚠️ Profile Data Loading Error</h3>
+              <p className="text-red-700 mb-2">{error.message}</p>
+              {error.details && (
+                <p className="text-red-600 text-sm mb-2">Details: {error.details}</p>
+              )}
+              {error.status && (
+                <p className="text-red-600 text-sm mb-2">Status: {error.status}</p>
+              )}
+              <div className="text-sm text-red-600">
+                <p>This usually means:</p>
+                <ul className="list-disc list-inside mt-1 space-y-1">
+                  <li>The backend server is not running</li>
+                  <li>There's a network connectivity issue</li>
+                  <li>Your authentication token has expired</li>
+                </ul>
+                <p className="mt-2">
+                  <strong>Solution:</strong> Make sure the backend server is running on port 5000, 
+                  or check the <Link href="/debug" className="underline">debug page</Link> for more information.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+      )}
+
+      {/* Debug Information */}
+      <section className="container-nexkartin mb-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <h3 className="text-sm font-semibold text-blue-800 mb-2">🔍 Debug Info</h3>
+            <div className="text-xs text-blue-700 space-y-1">
+              <p><strong>Orders State:</strong> {orders.length} orders loaded</p>
+              <p><strong>Loading:</strong> {loading ? 'Yes' : 'No'}</p>
+              <p><strong>User:</strong> {user ? 'Logged in' : 'Not logged in'}</p>
+              <p><strong>Profile Stats:</strong> {profileStats.totalOrders} orders, ${profileStats.totalSpent.toFixed(2)} spent</p>
+            </div>
           </div>
         </motion.div>
       </section>

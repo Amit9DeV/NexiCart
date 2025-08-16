@@ -64,18 +64,18 @@ const Header = () => {
   ];
 
   return (
-    <header className={`nav-nexkartin transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''}`}
+    <header className={`nav-nexkartin transition-all duration-300 backdrop-blur-md ${scrolled ? 'shadow-2xl' : ''}`}
       style={{ zIndex: 50 }}>
       {/* Top Bar (hide on scroll in mobile) */}
-      <div className={`bg-gray-900 text-white py-1.5 sm:py-2 text-xs sm:text-sm transition-transform duration-300 ${showTopBar ? 'translate-y-0' : '-translate-y-full'} fixed top-0 left-0 w-full lg:static lg:translate-y-0`} style={{ zIndex: 51 }}>
+      <div className={` hidden sm:block liquid-glass py-1.5 sm:py-2 text-xs sm:text-sm transition-transform duration-300 ${showTopBar ? 'translate-y-0' : '-translate-y-full'} fixed top-0 left-0 w-full lg:static lg:translate-y-0`} style={{ zIndex: 51 }}>
         <div className="container-nexkartin">
           <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-0">
             <div className="flex items-center space-x-3 sm:space-x-6">
-              <span className="flex items-center">
+              <span className="flex items-center text-black font-semibold" style={{textShadow: '0 1px 2px rgba(255,255,255,0.8)'}}>
                 <FiTruck className="w-4 h-4 mr-1.5" />
                 FREE SHIPPING FOR ALL ORDERS OF $150
               </span>
-              <span className="hidden md:flex items-center">
+              <span className="hidden md:flex items-center text-black font-semibold" style={{textShadow: '0 1px 2px rgba(255,255,255,0.8)'}}>
                 <FiHeadphones className="w-4 h-4 mr-1.5" />
                 24/7 SUPPORT
               </span>
@@ -85,31 +85,31 @@ const Header = () => {
               <div className="flex items-center space-x-1 lg:hidden">
                 <button
                   onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  className="p-1.5 rounded transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center hover:bg-gray-800"
+                  className="nav-icon-small"
                   aria-label="Open search"
                 >
-                  <FiSearch className="w-4 h-4 text-gray-300" />
+                  <FiSearch className="w-4 h-4 text-black/70" />
                 </button>
-                <button className="relative p-1.5 rounded transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center hover:bg-gray-800">
-                  <FiHeart className="w-4 h-4 text-gray-300" />
-                  <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[8px] rounded-full w-4 h-4 flex items-center justify-center">
+                <button className="relative nav-icon-small">
+                  <FiHeart className="w-4 h-4 text-black/70" />
+                  <span className="absolute -top-0.5 -right-0.5 liquid-glass text-black text-[8px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                     0
                   </span>
                 </button>
-                <button className="relative p-1.5 rounded transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center hover:bg-gray-800">
-                  <FiBell className="w-4 h-4 text-gray-300" />
-                  <span className="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-[8px] rounded-full w-4 h-4 flex items-center justify-center">
+                <button className="relative nav-icon-small">
+                  <FiBell className="w-4 h-4 text-black/70" />
+                  <span className="absolute -top-0.5 -right-0.5 liquid-glass text-black text-[8px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                     3
                   </span>
                 </button>
               </div>
               
-              <select className="bg-transparent text-white text-xs sm:text-sm border-none focus:outline-none">
+              <select className="liquid-glass text-black text-xs sm:text-sm border-none focus:outline-none bg-transparent">
                 <option>English</option>
                 <option>Deutsch</option>
                 <option>French</option>
               </select>
-              <select className="bg-transparent text-white text-xs sm:text-sm border-none focus:outline-none">
+              <select className="liquid-glass text-black text-xs sm:text-sm border-none focus:outline-none bg-transparent">
                 <option>United States (USD)</option>
                 <option>Deutschland (EUR)</option>
                 <option>Japan (JPY)</option>
@@ -120,16 +120,16 @@ const Header = () => {
       </div>
 
       {/* Main Navigation (sticky on mobile) */}
-      <div className="container-nexkartin sticky top-0 left-0 bg-white z-50" style={{ zIndex: 52 }}>
-        <div className="flex items-center justify-between py-3 sm:py-4">
+      <div className="container-nexkartin sticky top-0 left-0 liquid-glass z-50" style={{ zIndex: 52 }}>
+        <div className="flex items-center justify-between py-1 sm:py-2">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 min-w-[44px]">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center border-2 border-indigo-200 shadow-md">
-              <span className="text-white font-extrabold text-xl sm:text-2xl drop-shadow-lg">N</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 logo-icon">
+              <span className="text-black font-extrabold text-xl sm:text-2xl" style={{textShadow: '0 2px 4px rgba(255,255,255,0.8)'}}>N</span>
             </div>
             <div className="block">
-              <h1 className="text-lg sm:text-2xl font-bold text-gray-900 leading-tight">NexiCart</h1>
-              <p className="text-[10px] sm:text-xs text-gray-500 leading-tight">Premium Shopping</p>
+              <h1 className="text-lg sm:text-2xl font-bold text-black leading-tight" style={{textShadow: '0 2px 4px rgba(255,255,255,0.8)'}}>NexiCart</h1>
+              <p className="text-[10px] sm:text-xs text-black font-medium leading-tight" style={{textShadow: '0 1px 2px rgba(255,255,255,0.8)'}}>Premium Shopping</p>
             </div>
           </Link>
 
@@ -139,10 +139,10 @@ const Header = () => {
               <Input
                 type="text"
                 placeholder="Search for products..."
-                className="input-nexkartin pr-10 text-sm"
+                className="liquid-glass-input pr-10 text-sm text-black placeholder:text-black/60"
               />
               <button className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center">
-                <FiSearch className="w-5 h-5 text-gray-400" />
+                <FiSearch className="w-5 h-5 text-black/60" />
               </button>
             </div>
           </div>
@@ -151,26 +151,26 @@ const Header = () => {
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Desktop Action Buttons */}
             <div className="hidden lg:flex items-center space-x-2">
-              <button className="relative p-2 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-100">
-                <FiHeart className="w-5 h-5 text-gray-600" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] sm:text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <button className="relative nav-icon">
+                <FiHeart className="w-5 h-5 text-black/70" />
+                <span className="absolute -top-1 -right-1 liquid-glass text-black text-[10px] sm:text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   0
                 </span>
               </button>
 
-              <button className="relative p-2 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-100">
-                <FiBell className="w-5 h-5 text-gray-600" />
-                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] sm:text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <button className="relative nav-icon">
+                <FiBell className="w-5 h-5 text-black/70" />
+                <span className="absolute -top-1 -right-1 liquid-glass text-black text-[10px] sm:text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   3
                 </span>
               </button>
             </div>
 
             {/* Cart */}
-            <Link href="/cart" className="relative p-2 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-100">
-              <FiShoppingCart className="w-5 h-5 text-gray-600" />
+            <Link href="/cart" className="relative nav-icon">
+              <FiShoppingCart className="w-5 h-5 text-black/70" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-[10px] sm:text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 liquid-glass text-black text-[10px] sm:text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {cartItemCount}
                 </span>
               )}
@@ -179,31 +179,31 @@ const Header = () => {
             {/* User Menu */}
             {user ? (
               <div className="relative group">
-                <button className="flex items-center space-x-1 sm:space-x-2 p-2 rounded-lg transition-colors min-w-[44px] min-h-[44px] hover:bg-gray-100">
-                  <FiUser className="w-5 h-5 text-gray-600" />
-                  <span className="hidden sm:inline text-xs sm:text-sm font-medium text-gray-700">{user.name}</span>
-                  <FiChevronDown className="w-4 h-4 text-gray-400" />
+                <button className="flex items-center space-x-1 sm:space-x-2 nav-icon">
+                  <FiUser className="w-5 h-5 text-black/70" />
+                  <span className="hidden sm:inline text-xs sm:text-sm font-medium text-black" style={{textShadow: '0 1px 2px rgba(255,255,255,0.8)'}}>{user.name}</span>
+                  <FiChevronDown className="w-4 h-4 text-black/50" />
                 </button>
-                <div className="absolute right-0 mt-2 w-44 sm:w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute right-0 mt-2 w-44 sm:w-48 liquid-glass rounded-lg shadow-lg border border-white/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="py-2">
-                    <Link href="/profile" className="block px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100">
+                    <Link href="/profile" className="block px-4 py-2 text-xs sm:text-sm text-black hover:bg-white/10 font-medium">
                       My Profile
                     </Link>
-                    <Link href="/orders" className="block px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100">
+                    <Link href="/orders" className="block px-4 py-2 text-xs sm:text-sm text-black hover:bg-white/10 font-medium">
                       My Orders
                     </Link>
-                    <Link href="/wishlist" className="block px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100">
+                    <Link href="/wishlist" className="block px-4 py-2 text-xs sm:text-sm text-black hover:bg-white/10 font-medium">
                       Wishlist
                     </Link>
                     {user.role === 'admin' && (
-                      <Link href="/admin" className="block px-4 py-2 text-xs sm:text-sm text-indigo-700 hover:bg-indigo-50 font-medium">
+                      <Link href="/admin" className="block px-4 py-2 text-xs sm:text-sm text-indigo-600 hover:bg-white/10 font-medium">
                         Admin Dashboard
                       </Link>
                     )}
-                    <hr className="my-2" />
+                    <hr className="my-2 border-white/20" />
                     <button
                       onClick={logout}
-                      className="block w-full text-left px-4 py-2 text-xs sm:text-sm text-red-600 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-2 text-xs sm:text-sm text-red-600 hover:bg-white/10 font-medium"
                     >
                       Sign Out
                     </button>
@@ -212,7 +212,7 @@ const Header = () => {
               </div>
             ) : (
               <Link href="/auth/login">
-                <Button className="btn-nexkartin btn-nexkartin-primary min-w-[44px] min-h-[44px] px-3 sm:px-4 text-xs sm:text-sm">
+                <Button className="btn-sophisticated btn-sophisticated-primary min-w-[44px] min-h-[44px] px-3 sm:px-4 text-xs sm:text-sm">
                   <FiUser className="w-4 h-4 mr-1 sm:mr-2" />
                   <span className="hidden xs:inline">Sign In</span>
                 </Button>
@@ -222,13 +222,13 @@ const Header = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-gray-100"
+              className="lg:hidden nav-icon"
               aria-label="Open menu"
             >
               {isMobileMenuOpen ? (
-                <FiX className="w-5 h-5 text-gray-600" />
+                <FiX className="w-5 h-5 text-black/70" />
               ) : (
-                <FiMenu className="w-5 h-5 text-gray-600" />
+                <FiMenu className="w-5 h-5 text-black/70" />
               )}
             </button>
           </div>
@@ -236,7 +236,7 @@ const Header = () => {
       </div>
 
       {/* Category Navigation */}
-      <div className="border-t border-gray-200 bg-white">
+      <div className="liquid-glass border-t border-white/20">
         <div className="container-nexkartin">
           <nav className="hidden lg:flex items-center space-x-8 py-3">
             {categories.map((category) => (
@@ -251,13 +251,13 @@ const Header = () => {
             ))}
           </nav>
           {/* Mobile horizontal scrollable category nav */}
-          <nav className="flex lg:hidden items-center gap-2 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+          <nav className="flex lg:hidden justify-center items-center gap-2 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
             {categories.map((category) => (
               <Link
                 key={category.name}
                 href={category.href}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-100 text-xs font-medium text-gray-700 whitespace-nowrap hover:bg-indigo-100 transition-colors"
-                style={{ minWidth: 0 }}
+                className="flex justify-center gap-1 px-3 py-1.5 rounded-full liquid-glass  text-xs font-medium text-black whitespace-nowrap hover:bg-white/20 transition-colors"
+                style={{ minWidth: 0, textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
               >
                 <category.icon className="w-4 h-4 mr-1" />
                 {category.name}
@@ -274,17 +274,17 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-gray-200 bg-white"
+            className="lg:hidden liquid-glass border-t border-white/20"
           >
             <div className="container-nexkartin py-4">
               <div className="relative">
                 <Input
                   type="text"
                   placeholder="Search for products..."
-                  className="input-nexkartin pr-10 text-sm"
+                  className="liquid-glass-input pr-10 text-sm text-black placeholder:text-black/60"
                 />
                 <button className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center">
-                  <FiSearch className="w-5 h-5 text-gray-400" />
+                  <FiSearch className="w-5 h-5 text-black/60" />
                 </button>
               </div>
             </div>
@@ -299,7 +299,7 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-gray-200 bg-white"
+            className="lg:hidden liquid-glass border-t border-white/20"
           >
             <div className="container-nexkartin py-4">
               <nav className="space-y-3">
@@ -314,7 +314,7 @@ const Header = () => {
                     <span>{category.name}</span>
                   </Link>
                 ))}
-                <hr className="my-3" />
+                <hr className="my-3 border-white/20" />
                 {user ? (
                   <div className="space-y-2">
                     <Link href="/profile" className="nav-link-nexkartin block py-2">
@@ -327,7 +327,7 @@ const Header = () => {
                       Wishlist
                     </Link>
                     {user.role === 'admin' && (
-                      <Link href="/admin" className="nav-link-nexkartin block py-2 text-indigo-600 font-medium">
+                      <Link href="/admin" className="nav-link-nexkartin block py-2 text-indigo-300 font-medium">
                         Admin Dashboard
                       </Link>
                     )}
@@ -336,14 +336,14 @@ const Header = () => {
                         logout();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="nav-link-nexkartin block w-full text-left py-2 text-red-600"
+                      className="nav-link-nexkartin block w-full text-left py-2 text-red-300"
                     >
                       Sign Out
                     </button>
                   </div>
                 ) : (
                   <Link href="/auth/login">
-                    <Button className="btn-nexkartin btn-nexkartin-primary w-full text-xs sm:text-sm">
+                    <Button className="btn-nexkartin btn-nexkartin-primary w-full text-xs sm:text-sm liquid-glass-button">
                       <FiUser className="w-4 h-4 mr-1 sm:mr-2" />
                       Sign In
                     </Button>

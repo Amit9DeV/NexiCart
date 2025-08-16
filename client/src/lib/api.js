@@ -19,6 +19,13 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
+    console.log('🔐 API Request:', {
+      url: config.url,
+      method: config.method,
+      hasToken: !!token,
+      tokenLength: token ? token.length : 0
+    });
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -47,20 +54,34 @@ api.interceptors.request.use(
 // Handle response errors
 api.interceptors.response.use(
   (response) => {
+    console.log('✅ API Response:', {
+      url: response.config?.url,
+      status: response.status,
+      success: true
+    });
     return response;
   },
   (error) => {
-    console.error('API Response Error:', {
+    console.error('❌ API Response Error:', {
       url: error.config?.url,
       status: error.response?.status,
       message: error.message,
-      response: error.response?.data
+      response: error.response?.data,
+      headers: error.config?.headers
     });
-    if (error.response?.status === 401) {
+    
+    // Handle authentication errors
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      console.log('🔐 Authentication error detected, clearing credentials...');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/auth/login';
+      
+      // Only redirect if not already on login page
+      if (!window.location.pathname.includes('/auth/login')) {
+        window.location.href = '/auth/login';
+      }
     }
+    
     return Promise.reject(error);
   }
 );

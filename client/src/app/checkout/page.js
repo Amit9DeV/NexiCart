@@ -111,13 +111,41 @@ export default function CheckoutPage() {
         shippingPrice: shipping,
         totalPrice: total
       };
-      await ordersAPI.createOrder(orderData);
+      
+      console.log('Submitting order:', orderData);
+      const response = await ordersAPI.createOrder(orderData);
+      console.log('Order created successfully:', response);
+      
       clearCart();
       toast.success('Order placed successfully!');
       router.push('/checkout/success');
     } catch (error) {
       console.error('Checkout failed:', error);
-      toast.error('Checkout failed. Please try again.');
+      
+      // Provide more detailed error information
+      let errorMessage = 'Checkout failed. Please try again.';
+      
+      if (error.response?.status === 400) {
+        errorMessage = error.response.data?.error || 'Invalid order data. Please check your information.';
+      } else if (error.response?.status === 401) {
+        errorMessage = 'Authentication failed. Please log in again.';
+      } else if (error.response?.status === 404) {
+        errorMessage = 'Server not found. Please check if the backend is running.';
+      } else if (error.response?.status >= 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (error.code === 'NETWORK_ERROR' || error.message?.includes('Network Error')) {
+        errorMessage = 'Network error. Please check your connection and ensure the server is running.';
+      }
+      
+      toast.error(errorMessage);
+      
+      // Log detailed error for debugging
+      console.error('Detailed error:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+        config: error.config
+      });
     } finally {
       setLoading(false);
     }

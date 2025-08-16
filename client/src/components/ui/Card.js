@@ -10,14 +10,14 @@ const Card = React.forwardRef(({
   const baseClasses = 'transition-all duration-300';
   
   const variants = {
-    default: 'card-modern',
-    elevated: 'bg-white shadow-lg hover:shadow-xl border border-gray-100 rounded-2xl',
-    outlined: 'bg-white border-2 border-gray-200 hover:border-indigo-300 rounded-2xl',
-    ghost: 'bg-transparent hover:bg-gray-50 rounded-2xl',
-    gradient: 'bg-gradient-to-br from-white to-gray-50 border border-gray-100 rounded-2xl shadow-md hover:shadow-lg',
-    glass: 'bg-white/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg hover:shadow-xl',
-    dark: 'bg-gray-900 text-white border border-gray-800 rounded-2xl shadow-lg hover:shadow-xl',
-    premium: 'bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-2xl shadow-md hover:shadow-lg'
+    default: 'liquid-glass-card',
+    elevated: 'liquid-glass shadow-lg hover:shadow-xl border border-white/30 rounded-2xl',
+    outlined: 'liquid-glass border-2 border-white/40 hover:border-white/60 rounded-2xl',
+    ghost: 'bg-transparent hover:bg-white/10 rounded-2xl',
+    gradient: 'liquid-glass bg-gradient-to-br from-white/15 to-white/5 border border-white/30 rounded-2xl shadow-md hover:shadow-lg',
+    glass: 'liquid-glass rounded-2xl shadow-lg hover:shadow-xl',
+    dark: 'liquid-glass text-black border border-white/30 rounded-2xl shadow-lg hover:shadow-xl',
+    premium: 'liquid-glass bg-gradient-to-br from-indigo-500/25 to-purple-500/25 border border-indigo-300/40 rounded-2xl shadow-md hover:shadow-lg'
   };
 
   const classes = `${baseClasses} ${variants[variant]} ${className}`;
@@ -56,10 +56,10 @@ const CardTitle = React.forwardRef(({
   ...props 
 }, ref) => {
   const titleVariants = {
-    default: 'text-xl font-semibold text-gray-900 mb-2',
-    gradient: 'text-xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2',
-    large: 'text-2xl font-bold text-gray-900 mb-3',
-    small: 'text-lg font-medium text-gray-900 mb-2'
+    default: 'text-xl font-semibold text-black mb-2',
+    gradient: 'text-xl font-semibold bg-gradient-to-r from-black to-black bg-clip-text text-transparent mb-2',
+    large: 'text-2xl font-bold text-black mb-3',
+    small: 'text-lg font-medium text-black mb-2'
   };
 
   return (
@@ -81,7 +81,7 @@ const CardDescription = React.forwardRef(({
   return (
     <p
       ref={ref}
-      className={`text-gray-600 leading-relaxed ${className}`}
+      className={`text-black/80 leading-relaxed ${className}`}
       {...props}
     >
       {children}
@@ -128,11 +128,11 @@ const CardBadge = React.forwardRef(({
   ...props 
 }, ref) => {
   const badgeVariants = {
-    default: 'bg-indigo-100 text-indigo-800',
-    success: 'bg-green-100 text-green-800',
-    warning: 'bg-yellow-100 text-yellow-800',
-    error: 'bg-red-100 text-red-800',
-    gradient: 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
+    default: 'liquid-glass text-black font-semibold',
+    success: 'liquid-glass text-green-800 border-green-800/40 font-semibold',
+    warning: 'liquid-glass text-yellow-800 border-yellow-800/40 font-semibold',
+    error: 'liquid-glass text-red-800 border-red-800/40 font-semibold',
+    gradient: 'liquid-glass bg-gradient-to-r from-indigo-500/80 to-purple-500/80 text-black font-semibold'
   };
 
   return (

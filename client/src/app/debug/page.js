@@ -1,115 +1,216 @@
 'use client';
 
 import { useState } from 'react';
-import { productsAPI } from '@/lib/api';
-import axios from 'axios';
+import { ordersAPI, authAPI } from '@/lib/api';
+import { Button } from '@/components/ui/Button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 
-export default function Debug() {
-  const [results, setResults] = useState({});
+export default function DebugPage() {
+  const [testResults, setTestResults] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const testDirectAxios = async () => {
+  const runTests = async () => {
     setLoading(true);
+    const results = {};
+
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`);
-      setResults(prev => ({
-        ...prev,
-        directAxios: {
+      // Test 1: Check localStorage
+      try {
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        results.localStorage = {
           success: true,
-          data: response.data,
-          productsCount: response.data?.data?.length || 0
-        }
-      }));
-    } catch (error) {
-      setResults(prev => ({
-        ...prev,
-        directAxios: {
+          data: {
+            hasToken: !!token,
+            tokenLength: token ? token.length : 0,
+            hasUser: !!user,
+            userData: user ? JSON.parse(user) : null
+          },
+          message: `Token: ${!!token}, User: ${!!user}`
+        };
+      } catch (error) {
+        results.localStorage = {
           success: false,
           error: error.message,
-          details: error.response?.data || 'No response data'
-        }
-      }));
-    }
-    setLoading(false);
-  };
-
-  const testViaAPI = async () => {
-    setLoading(true);
-    try {
-      const response = await productsAPI.getProducts();
-      setResults(prev => ({
-        ...prev,
-        viaAPI: {
-          success: true,
-          data: response.data,
-          productsCount: response.data?.data?.length || 0
-        }
-      }));
-    } catch (error) {
-      setResults(prev => ({
-        ...prev,
-        viaAPI: {
-          success: false,
-          error: error.message,
-          details: error.response?.data || 'No response data'
-        }
-      }));
-    }
-    setLoading(false);
-  };
-
-  const testEnvVar = () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    setResults(prev => ({
-      ...prev,
-      envVar: {
-        NEXT_PUBLIC_API_URL: apiUrl || 'NOT SET',
-        defaultUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
+          message: 'Failed to check localStorage'
+        };
       }
-    }));
+
+      // Test 2: Check if user is authenticated
+      try {
+        const userResponse = await authAPI.getMe();
+        results.auth = {
+          success: true,
+          data: userResponse.data,
+          message: 'User authenticated successfully'
+        };
+      } catch (error) {
+        results.auth = {
+          success: false,
+          error: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+          message: `Authentication failed: ${error.response?.status} - ${error.response?.data?.error || error.message}`
+        };
+      }
+
+      // Test 3: Try to get user orders
+      try {
+        const ordersResponse = await ordersAPI.getMyOrders();
+        results.orders = {
+          success: true,
+          data: ordersResponse.data,
+          count: ordersResponse.data.data?.length || 0,
+          message: `Found ${ordersResponse.data.data?.length || 0} orders`
+        };
+      } catch (error) {
+        results.orders = {
+          success: false,
+          error: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+          message: `Failed to fetch orders: ${error.response?.status} - ${error.response?.data?.error || error.message}`
+        };
+      }
+
+      // Test 4: Test server connectivity
+      try {
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          results.connectivity = {
+            success: true,
+            status: response.status,
+            message: 'Server is reachable'
+          };
+        } else {
+          results.connectivity = {
+            success: false,
+            status: response.status,
+            message: `Server responded with status ${response.status}`
+          };
+        }
+      } catch (error) {
+        results.connectivity = {
+          success: false,
+          error: error.message,
+          message: 'Server is not reachable'
+        };
+      }
+
+      // Test 5: Test raw token request
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const response = await fetch('/api/auth/me', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            results.rawToken = {
+              success: true,
+              data: data,
+              message: 'Raw token request successful'
+            };
+          } else {
+            const errorData = await response.json().catch(() => ({}));
+            results.rawToken = {
+              success: false,
+              status: response.status,
+              data: errorData,
+              message: `Raw token request failed: ${response.status}`
+            };
+          }
+        } else {
+          results.rawToken = {
+            success: false,
+            message: 'No token found in localStorage'
+          };
+        }
+      } catch (error) {
+        results.rawToken = {
+          success: false,
+          error: error.message,
+          message: 'Raw token request error'
+        };
+      }
+
+    } catch (error) {
+      console.error('Test error:', error);
+    } finally {
+      setLoading(false);
+    }
+
+    setTestResults(results);
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">API Debug Page</h1>
-      
-      <div className="space-y-4 mb-8">
-        <button 
-          onClick={testEnvVar}
-          disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded mr-4"
-        >
-          Test Environment Variables
-        </button>
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">API Debug & Testing</h1>
         
-        <button 
-          onClick={testDirectAxios}
-          disabled={loading}
-          className="bg-green-500 text-white px-4 py-2 rounded mr-4"
-        >
-          Test Direct Axios Call
-        </button>
-        
-        <button 
-          onClick={testViaAPI}
-          disabled={loading}
-          className="bg-purple-500 text-white px-4 py-2 rounded mr-4"
-        >
-          Test Via API Helper
-        </button>
-      </div>
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>API Connection Test</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              onClick={runTests} 
+              disabled={loading}
+              className="mb-4"
+            >
+              {loading ? 'Running Tests...' : 'Run API Tests'}
+            </Button>
 
-      {loading && <p>Loading...</p>}
+            {Object.keys(testResults).length > 0 && (
+              <div className="space-y-4">
+                {Object.entries(testResults).map(([testName, result]) => (
+                  <div key={testName} className={`p-4 rounded-lg border ${
+                    result.success 
+                      ? 'bg-green-50 border-green-200' 
+                      : 'bg-red-50 border-red-200'
+                  }`}>
+                    <h3 className="font-semibold capitalize mb-2">{testName}</h3>
+                    <p className={`text-sm ${result.success ? 'text-green-700' : 'text-red-700'}`}>
+                      {result.message}
+                    </p>
+                    {result.data && (
+                      <pre className="mt-2 text-xs bg-gray-100 p-2 rounded overflow-auto">
+                        {JSON.stringify(result.data, null, 2)}
+                      </pre>
+                    )}
+                    {result.error && (
+                      <p className="mt-2 text-xs text-red-600">
+                        Error: {result.error}
+                      </p>
+                    )}
+                    {result.status && (
+                      <p className="mt-2 text-xs text-gray-600">
+                        Status: {result.status}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-      <div className="space-y-6">
-        {Object.entries(results).map(([testName, result]) => (
-          <div key={testName} className="border p-4 rounded">
-            <h3 className="text-xl font-semibold mb-2">{testName}</h3>
-            <pre className="bg-gray-100 p-4 rounded text-sm overflow-auto">
-              {JSON.stringify(result, null, 2)}
-            </pre>
-          </div>
-        ))}
+        <Card>
+          <CardHeader>
+            <CardTitle>Environment Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2 text-sm">
+              <p><strong>NODE_ENV:</strong> {process.env.NODE_ENV}</p>
+              <p><strong>NEXT_PUBLIC_API_URL:</strong> {process.env.NEXT_PUBLIC_API_URL || 'Not set'}</p>
+              <p><strong>Base URL:</strong> {process.env.NODE_ENV === 'development' ? '/api' : 'http://localhost:5000/api'}</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -55,11 +55,11 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { name: 'Facebook', icon: FiFacebook, href: '#', color: 'hover:text-blue-600' },
-    { name: 'Twitter', icon: FiTwitter, href: '#', color: 'hover:text-blue-400' },
-    { name: 'Instagram', icon: FiInstagram, href: '#', color: 'hover:text-pink-600' },
-    { name: 'YouTube', icon: FiYoutube, href: '#', color: 'hover:text-red-600' },
-    { name: 'LinkedIn', icon: FiLinkedin, href: '#', color: 'hover:text-blue-700' }
+    { name: 'Facebook', icon: FiFacebook, href: '#', color: 'hover:text-blue-300' },
+    { name: 'Twitter', icon: FiTwitter, href: '#', color: 'hover:text-blue-300' },
+    { name: 'Instagram', icon: FiInstagram, href: '#', color: 'hover:text-pink-300' },
+    { name: 'YouTube', icon: FiYoutube, href: '#', color: 'hover:text-red-300' },
+    { name: 'LinkedIn', icon: FiLinkedin, href: '#', color: 'hover:text-blue-300' }
   ];
 
   const features = [
@@ -86,18 +86,18 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="footer-nexkartin">
+    <footer className="footer-nexkartin ">
       {/* Features Section */}
-      <section className="section-nexkartin-sm bg-gray-800">
+      <section className="section-nexkartin-sm">
         <div className="container-nexkartin">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div key={feature.title} className="text-center">
-                <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-6 h-6 text-white" />
+              <div key={feature.title} className="text-center liquid-glass rounded-xl p-6">
+                <div className="w-12 h-12 liquid-glass rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="w-6 h-6 text-black" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-400">{feature.description}</p>
+                <h3 className="text-lg font-semibold text-black mb-2">{feature.title}</h3>
+                <p className="text-sm text-black/70">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -111,31 +111,31 @@ const Footer = () => {
             {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="flex items-center space-x-2 mb-6">
-                <div className="w-10 h-10 bg-gradient-nexkartin rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">N</span>
+                <div className="w-10 h-10 liquid-glass rounded-lg flex items-center justify-center">
+                  <span className="text-black font-bold text-xl">N</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">NexiCart</h3>
-                  <p className="text-sm text-gray-400">Premium Shopping</p>
+                  <h3 className="text-xl font-bold text-black">NexiCart</h3>
+                  <p className="text-sm text-black/70">Premium Shopping</p>
                 </div>
               </div>
-              <p className="text-gray-400 mb-6">
+              <p className="text-black/70 mb-6">
                 Your trusted destination for quality products and exceptional shopping experiences.
               </p>
               
               {/* Contact Info */}
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <FiMapPin className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-400">451 Wall Street, UK, London</span>
+                  <FiMapPin className="w-4 h-4 text-black/70" />
+                  <span className="text-sm text-black/70">451 Wall Street, UK, London</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <FiPhone className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-400">(064) 332-1233</span>
+                  <FiPhone className="w-4 h-4 text-black/70" />
+                  <span className="text-sm text-black/70">(064) 332-1233</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <FiMail className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-400">info@nexicart.com</span>
+                  <FiMail className="w-4 h-4 text-black/70" />
+                  <span className="text-sm text-black/70">info@nexicart.com</span>
                 </div>
               </div>
             </div>
@@ -143,13 +143,13 @@ const Footer = () => {
             {/* Footer Links */}
             {Object.entries(footerLinks).map(([title, links]) => (
               <div key={title}>
-                <h4 className="text-lg font-semibold text-white mb-6">{title}</h4>
+                <h4 className="text-lg font-semibold text-black mb-6">{title}</h4>
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link.name}>
                       <Link 
                         href={link.href}
-                        className="text-sm text-gray-400 hover:text-white transition-colors duration-200 flex items-center group"
+                        className="text-sm text-black/70 hover:text-black transition-colors duration-200 flex items-center group"
                       >
                         <FiArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                         {link.name}
@@ -164,23 +164,25 @@ const Footer = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="border-t border-gray-800">
+      <section className="border-t border-black/20">
         <div className="container-nexkartin">
           <div className="py-8">
             <div className="text-center max-w-2xl mx-auto">
-              <h3 className="text-2xl font-bold text-white mb-4">Join Our Newsletter Now</h3>
-              <p className="text-gray-400 mb-6">
-                Be the First to Know. Sign up to newsletter today
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <button className="btn-nexkartin btn-nexkartin-primary">
-                  Subscribe
-                </button>
+              <div className="liquid-glass rounded-3xl p-8">
+                <h3 className="text-2xl font-bold text-black mb-4">Join Our Newsletter Now</h3>
+                <p className="text-black/70 mb-6">
+                  Be the First to Know. Sign up to newsletter today
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="flex-1 px-4 py-3 liquid-glass-input rounded-lg text-black placeholder:text-black/50 focus:outline-none focus:ring-2 focus:ring-black/50"
+                  />
+                  <button className="btn-sophisticated btn-sophisticated-primary">
+                    Subscribe
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -188,11 +190,11 @@ const Footer = () => {
       </section>
 
       {/* Bottom Bar */}
-      <section className="border-t border-gray-800">
+      <section className="border-t border-black/20">
         <div className="container-nexkartin">
           <div className="py-6 flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-4 mb-4 md:mb-0">
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-black/70">
                 Based on <strong>WoodMart</strong> theme 2024 <strong>WooCommerce Themes</strong>.
               </span>
             </div>
@@ -204,7 +206,7 @@ const Footer = () => {
                   <Link
                     key={social.name}
                     href={social.href}
-                    className={`text-gray-400 ${social.color} transition-colors duration-200`}
+                    className={`text-black/70 ${social.color} transition-colors duration-200`}
                     aria-label={social.name}
                   >
                     <social.icon className="w-5 h-5" />
@@ -214,7 +216,7 @@ const Footer = () => {
               
               {/* Payment Methods */}
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-400">payments</span>
+                <span className="text-sm text-black/70">payments</span>
               </div>
             </div>
           </div>
@@ -222,12 +224,12 @@ const Footer = () => {
       </section>
 
       {/* Copyright */}
-      <section className="border-t border-gray-800">
+      <section className="border-t border-black/20">
         <div className="container-nexkartin">
           <div className="py-4 text-center">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-black/70">
               © {currentYear} NexiCart. All rights reserved. Made with{' '}
-              <FiHeart className="inline w-4 h-4 text-red-500" /> by our team.
+              <FiHeart className="inline w-4 h-4 text-red-300" /> by our team.
             </p>
           </div>
         </div>

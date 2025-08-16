@@ -38,6 +38,43 @@ exports.addOrderItems = async (req, res, next) => {
       });
     }
 
+    // Validate and set default values for shipping address
+    const validatedShippingAddress = {
+      street: shippingAddress.address || shippingAddress.street || '',
+      city: shippingAddress.city || '',
+      state: shippingAddress.state || '',
+      zipCode: shippingAddress.pincode || shippingAddress.zipCode || '',
+      country: shippingAddress.country || 'India'
+    };
+
+    // Validate required address fields
+    if (!validatedShippingAddress.city || !validatedShippingAddress.state) {
+      return res.status(400).json({
+        success: false,
+        error: 'City and state are required in shipping address'
+      });
+    }
+
+    // Validate payment method
+    const validPaymentMethods = ['stripe', 'paypal', 'cash', 'cod', 'upi', 'razorpay'];
+    
+    // Map client payment method IDs to server values
+    let mappedPaymentMethod = paymentMethod;
+    if (paymentMethod === 'card') {
+      mappedPaymentMethod = 'stripe';
+    } else if (paymentMethod === 'netbanking') {
+      mappedPaymentMethod = 'razorpay';
+    } else if (paymentMethod === 'emi') {
+      mappedPaymentMethod = 'razorpay';
+    }
+    
+    if (!validPaymentMethods.includes(mappedPaymentMethod)) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid payment method. Must be one of: ${validPaymentMethods.join(', ')}`
+      });
+    }
+
     // Check if all products exist and have sufficient stock
     const validatedItems = [];
     for (let item of orderItems) {
@@ -89,8 +126,8 @@ exports.addOrderItems = async (req, res, next) => {
     const order = new Order({
       orderItems: validatedItems,
       user: req.user._id,
-      shippingAddress,
-      paymentMethod,
+      shippingAddress: validatedShippingAddress,
+      paymentMethod: mappedPaymentMethod,
       itemsPrice,
       taxPrice,
       shippingPrice,

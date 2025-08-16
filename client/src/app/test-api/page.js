@@ -1,96 +1,142 @@
 'use client';
 
 import { useState } from 'react';
-import { productsAPI } from '@/lib/api';
+import { authAPI, ordersAPI } from '@/lib/api';
+import { Button } from '@/components/ui/Button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 
-export default function TestAPI() {
-  const [result, setResult] = useState(null);
+export default function TestAPIPage() {
+  const [results, setResults] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const testAPI = async () => {
+  const testAuth = async () => {
     setLoading(true);
-    setError(null);
-    setResult(null);
-    
+    const results = {};
+
     try {
-      const response = await productsAPI.getProducts({ limit: 5 });
-      setResult(response.data);
-    } catch (err) {
-      setError({
-        message: err.message,
-        status: err.response?.status,
-        data: err.response?.data,
-        config: {
-          url: err.config?.url,
-          baseURL: err.config?.baseURL,
-          method: err.config?.method
-        }
-      });
+      // Test 1: Check localStorage
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      console.log('🔍 localStorage check:', { token: !!token, user: !!user });
+      
+      if (token) {
+        console.log('🔍 Token preview:', token.substring(0, 20) + '...');
+      }
+
+      // Test 2: Test auth/me endpoint
+      try {
+        console.log('🔍 Testing auth/me...');
+        const authResponse = await authAPI.getMe();
+        console.log('✅ auth/me success:', authResponse.data);
+        results.auth = { success: true, data: authResponse.data };
+      } catch (error) {
+        console.error('❌ auth/me failed:', error);
+        results.auth = { 
+          success: false, 
+          error: error.message,
+          status: error.response?.status,
+          data: error.response?.data
+        };
+      }
+
+      // Test 3: Test orders endpoint
+      try {
+        console.log('🔍 Testing orders/myorders...');
+        const ordersResponse = await ordersAPI.getMyOrders();
+        console.log('✅ orders/myorders success:', ordersResponse.data);
+        results.orders = { success: true, data: ordersResponse.data };
+      } catch (error) {
+        console.error('❌ orders/myorders failed:', error);
+        results.orders = { 
+          success: false, 
+          error: error.message,
+          status: error.response?.status,
+          data: error.response?.data
+        };
+      }
+
+    } catch (error) {
+      console.error('Test error:', error);
     } finally {
       setLoading(false);
     }
+
+    setResults(results);
+  };
+
+  const clearAuth = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setResults({});
+    console.log('🔍 Auth cleared');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">API Connection Test</h1>
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">API Authentication Test</h1>
         
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Environment Variables</h2>
-          <div className="space-y-2 text-sm">
-            <p><strong>NEXT_PUBLIC_API_URL:</strong> {process.env.NEXT_PUBLIC_API_URL || 'Not set'}</p>
-            <p><strong>NODE_ENV:</strong> {process.env.NODE_ENV}</p>
-          </div>
+        <div className="flex gap-4 mb-6">
+          <Button onClick={testAuth} disabled={loading}>
+            {loading ? 'Testing...' : 'Test Authentication'}
+          </Button>
+          <Button onClick={clearAuth} variant="outline">
+            Clear Auth
+          </Button>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <button
-            onClick={testAPI}
-            disabled={loading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loading ? 'Testing...' : 'Test API Connection'}
-          </button>
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-red-800 mb-2">Error</h3>
-            <div className="space-y-2 text-sm">
-              <p><strong>Message:</strong> {error.message}</p>
-              <p><strong>Status:</strong> {error.status}</p>
-              <p><strong>URL:</strong> {error.config?.url}</p>
-              <p><strong>Base URL:</strong> {error.config?.baseURL}</p>
-              <p><strong>Method:</strong> {error.config?.method}</p>
-              {error.data && (
-                <div>
-                  <strong>Response Data:</strong>
-                  <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-auto">
-                    {JSON.stringify(error.data, null, 2)}
-                  </pre>
-                </div>
-              )}
-            </div>
+        {Object.keys(results).length > 0 && (
+          <div className="space-y-4">
+            {Object.entries(results).map(([testName, result]) => (
+              <Card key={testName}>
+                <CardHeader>
+                  <CardTitle className="capitalize">{testName}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className={`p-4 rounded-lg ${
+                    result.success 
+                      ? 'bg-green-50 border border-green-200' 
+                      : 'bg-red-50 border border-red-200'
+                  }`}>
+                    <p className={`font-medium ${result.success ? 'text-green-700' : 'text-red-700'}`}>
+                      {result.success ? '✅ Success' : '❌ Failed'}
+                    </p>
+                    {result.error && (
+                      <p className="text-sm text-red-600 mt-1">
+                        Error: {result.error}
+                      </p>
+                    )}
+                    {result.status && (
+                      <p className="text-sm text-gray-600 mt-1">
+                        Status: {result.status}
+                      </p>
+                    )}
+                    {result.data && (
+                      <pre className="mt-2 text-xs bg-gray-100 p-2 rounded overflow-auto">
+                        {JSON.stringify(result.data, null, 2)}
+                      </pre>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         )}
 
-        {result && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-green-800 mb-2">Success!</h3>
-            <div className="space-y-2 text-sm">
-              <p><strong>Status:</strong> {result.success ? 'Success' : 'Failed'}</p>
-              <p><strong>Count:</strong> {result.count || result.data?.length || 'N/A'}</p>
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Instructions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm text-gray-600 space-y-2">
+              <p>1. Click "Test Authentication" to test the API calls</p>
+              <p>2. Check the browser console (F12) for detailed logs</p>
+              <p>3. If you get 403 errors, try "Clear Auth" and log in again</p>
+              <p>4. The logs will show exactly what's happening with the requests</p>
             </div>
-            <div className="mt-4">
-              <strong>Response Data:</strong>
-              <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-auto max-h-96">
-                {JSON.stringify(result, null, 2)}
-              </pre>
-            </div>
-          </div>
-        )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

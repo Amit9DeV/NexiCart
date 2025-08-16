@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema({
   shippingAddress: {
     street: {
       type: String,
-      required: true
+      required: false
     },
     city: {
       type: String,
@@ -45,17 +45,18 @@ const orderSchema = new mongoose.Schema({
     },
     zipCode: {
       type: String,
-      required: true
+      required: false
     },
     country: {
       type: String,
-      required: true
+      required: false,
+      default: 'India'
     }
   },
   paymentMethod: {
     type: String,
     required: true,
-    enum: ['stripe', 'paypal', 'cash', 'upi', 'razorpay'],
+    enum: ['stripe', 'paypal', 'cash', 'cod', 'upi', 'razorpay'],
     default: 'stripe'
   },
   paymentResult: {
